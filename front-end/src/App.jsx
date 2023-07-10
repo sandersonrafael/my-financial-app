@@ -1,10 +1,11 @@
-function App() {
+import { BrowserRouter } from 'react-router-dom';
+import Login from './pages/Login';
+
+export default function App() {
 
   return (
-    <div>
-      ok
-    </div>
+    <BrowserRouter>
+      <Login />
+    </BrowserRouter>
   );
 }
-
-export default App;
