@@ -1,0 +1,25 @@
+{
+  "name": "front-end",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0 --fix",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "components": "^0.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.10.1",
+    "styled": "^1.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.2",
+    "eslint": "^8.44.0",
+    "eslint-plugin-react": "^7.32.2",
+    "vite": "^4.4.0"
+  }
+}
