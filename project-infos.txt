@@ -1,0 +1,5 @@
+Name: My Financial App
+
+Domain:
+	-> payd: https://myfinancialapp.com.br
+	-> free: https://myfinancialapp.netlify.app || https://myfinancialapp.vercel.app

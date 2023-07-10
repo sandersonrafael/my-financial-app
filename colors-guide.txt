@@ -1,0 +1,8 @@
+Variables css:
+Primary color: blue tone;
+Secondary color: blue light tone;
+Warn color: red tone;
+
+DarkTheme tones {
+	...
+}

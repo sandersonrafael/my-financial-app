@@ -1,0 +1,8 @@
+Dependences:
+	-> Express JS
+	-> MongoDB
+	-> Mongoose
+
+Dev Dependences:
+	-> ESLint
+	-> Prettier

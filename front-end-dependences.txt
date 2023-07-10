@@ -1,0 +1,9 @@
+Dependences:
+	-> Vite
+	-> React
+	-> Styled Components
+	-> React Icons
+	
+DevDependences:
+	-> Eslint
+	-> Prettier
