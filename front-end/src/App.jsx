@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Login from './pages/Login';
+import Home from './pages/Home';
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [loginPage, setLoginPage] = useState(true);
+  const [guest, setGuest] = useState(false);
+  // aviso através de cookies que usuário convidado não possui seus dados salvos
 
-  useEffect(() => setLoginPage(!loggedIn), [loggedIn]);
-
-  return (
-    <Login setLoggedIn={setLoggedIn} />
+  return !(loggedIn || guest) ? (
+    <Login setLoggedIn={setLoggedIn} setGuest={setGuest} />
+  ) : (
+    <Home />
   );
 }

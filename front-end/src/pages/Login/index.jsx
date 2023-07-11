@@ -6,7 +6,7 @@ import { PrimaryButton, SecondaryButton } from '../../components/Buttons';
 import { validateLogin, validateRegister } from '../../utils/validation';
 import { Container, Main, MainHeader, Input, P } from './styles';
 
-export default function Login({ setLoggedIn }) {
+export default function Login({ setLoggedIn, setGuest }) {
   const [registerFields, setRegisterFields] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,18 +24,15 @@ export default function Login({ setLoggedIn }) {
   const handleLoginOrRegister = () => {
     let newErrors = {};
     if (registerFields) {
-      const { emailMsgs, passwordMsgs, repeatPasswordMsgs } = validateRegister(
-        email,
-        password,
-        repeatPassword,
-      );
-      setErrors({ emailMsgs, passwordMsgs, repeatPasswordMsgs });
+      newErrors = validateRegister(email, password, repeatPassword);
     } else {
-      const { emailMsgs, passwordMsgs } = validateLogin(email, password);
-      setErrors({ emailMsgs, passwordMsgs });
+      newErrors = validateLogin(email, password);
     }
-    for ()
-
+    for (const key in newErrors) {
+      if (newErrors[key].length > 0) return setErrors(newErrors);
+    }
+    setLoggedIn(true);
+    return setErrors({});
   };
 
   return (
@@ -108,7 +105,7 @@ export default function Login({ setLoggedIn }) {
 
         {!registerFields && (
           <P style={{ paddingBottom: 10 }}>
-            Ou: <span>Entre sem uma conta</span>
+            Ou: <span onClick={() => setGuest(true)}>Entre sem uma conta</span>
           </P>
         )}
       </Main>
@@ -118,4 +115,5 @@ export default function Login({ setLoggedIn }) {
 
 Login.propTypes = {
   setLoggedIn: PropTypes.func.isRequired,
+  setGuest: PropTypes.func.isRequired,
 };
