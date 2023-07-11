@@ -1,6 +1,8 @@
 import validator from 'validator';
 
 export const validateLogin = (email, password) => {
+  email = email.toLowerCase();
+
   const errors = {
     emailMsgs: [],
     passwordMsgs: [],
@@ -24,10 +26,14 @@ export const validateLogin = (email, password) => {
 
   // check if matches login and password and return email error if no
 
+  if (errors.emailMsgs.length === 0 && errors.passwordMsgs.length === 0)
+    'function that send email and password to database'; // !important
   return errors;
 };
 
 export const validateRegister = (email, password, repeatPassword) => {
+  email = email.toLowerCase();
+
   const errors = {
     emailMsgs: [],
     passwordMsgs: [],
@@ -38,6 +44,12 @@ export const validateRegister = (email, password, repeatPassword) => {
     .push('A confirmação de senha não pode estar em branco');
   else if (password !== repeatPassword) errors.repeatPasswordMsgs
     .push('A senha informada é diferente da confirmação');
+
+  if (
+    errors.emailMsgs.length === 0 &&
+    errors.passwordMsgs.length === 0 &&
+    errors.repeatPasswordMsgs.length === 0
+  )
+    'function that send email and password to database'; // !important
   return errors;
 };
-
