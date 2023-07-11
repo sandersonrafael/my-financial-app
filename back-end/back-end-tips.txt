@@ -1,0 +1,4 @@
+In MongoDB, i can create a "id" for everymachine that login the user. It will save the total devices that have did a login in the financial system. Aditionally, the user will receiva a pair of key and value, that the key is: connected devices in account, named: connectedDevicesId, and simes like:
+connectedDevicesId: [115, 361, 552],
+
+When the user get logged in application, it will send and save the device id and create a token, that both get save in localStorage. Everytime, for a dettermined time, if the user access the site, the system need to confirm the token and a device id save in localStorage. If the data don't match with mongodb data, will request a new login for the user

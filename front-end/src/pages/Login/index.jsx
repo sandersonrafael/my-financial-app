@@ -1,32 +1,113 @@
+import { useState } from 'react';
+
 import { Link } from 'react-router-dom';
 import { Container, Main, MainHeader, Input, P } from './styles';
-import { AskCamp } from './styles';
+import { AskCamp, Error } from './styles';
 import { PrimaryButton, SecondaryButton } from '../../components/Buttons';
+import { validateLogin, validateRegister } from '../../utils/validation';
 
 export default function Login() {
+  const [registerFields, setRegisterFields] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
+  const [errors, setErrors] = useState({});
+
+  const handleChangeLoginRegister = () => {
+    setRegisterFields(!registerFields);
+    setErrors({});
+    setEmail('');
+    setPassword('');
+    setRepeatPassword('');
+  };
+
+  const handleLoginOrRegister = () => {
+    if (registerFields) {
+      const { emailMsgs, passwordMsgs, repeatPasswordMsgs } = validateRegister(
+        email,
+        password,
+        repeatPassword,
+      );
+      setErrors({ emailMsgs, passwordMsgs, repeatPasswordMsgs });
+    } else {
+      const { emailMsgs, passwordMsgs } = validateLogin(email, password);
+      setErrors({ emailMsgs, passwordMsgs });
+    }
+  };
+
   return (
     <Container>
       <Main>
-        <MainHeader>Faça Login</MainHeader>
+        <MainHeader>
+          {registerFields ? 'Crie Sua Conta' : 'Faça Login'}
+        </MainHeader>
 
-        <P>Tenha o controle da sua vida financeira</P>
+        <P>Tenha o controle da sua vida financeira!</P>
 
-        <Input type="text" placeholder="Digite seu E-mail" />
-        <Input type="password" placeholder="Digite sua Senha" />
+        <Input
+          type="email"
+          placeholder="Digite seu E-mail"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        {errors.emailMsgs &&
+          errors.emailMsgs.map((value, key) => (
+            <Error key={key}>{value}</Error>
+          ))}
 
-        <AskCamp>
-          <Link to="/forgot-password">Esqueceu sua senha?</Link>
-        </AskCamp>
+        <Input
+          type="password"
+          placeholder="Digite sua Senha"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {errors.passwordMsgs &&
+          errors.passwordMsgs.map((value, key) => (
+            <Error key={key}>{value}</Error>
+          ))}
 
-        <PrimaryButton style={{ margin: '0 40px 15px' }}>Entrar</PrimaryButton>
+        {registerFields && (
+          <>
+            <Input
+              type="password"
+              placeholder="Confirme sua senha"
+              value={repeatPassword}
+              onChange={(e) => setRepeatPassword(e.target.value)}
+            />
+            {errors.repeatPasswordMsgs &&
+              errors.repeatPasswordMsgs.map((value, key) => (
+                <Error key={key}>{value}</Error>
+              ))}
+          </>
+        )}
 
-        <P>Não possui uma conta?</P>
+        {!registerFields && (
+          <AskCamp>
+            <Link to="/forgot-password">Esqueceu sua senha?</Link>
+          </AskCamp>
+        )}
 
-        <SecondaryButton style={{ margin: '0 40px 20px' }}>
-          Registre-se
+        <PrimaryButton
+          style={{ margin: '10px 40px 15px' }}
+          onClick={handleLoginOrRegister}
+        >
+          {registerFields ? 'Registrar-se' : 'Entrar'}
+        </PrimaryButton>
+
+        <P>{registerFields ? 'Já' : 'Ainda não'} possui uma conta?</P>
+
+        <SecondaryButton
+          style={{ margin: `5px 40px ${registerFields ? '33px' : '15px'}` }}
+          onClick={handleChangeLoginRegister}
+        >
+          {registerFields ? 'Faça Login' : 'Registre-se'}
         </SecondaryButton>
 
-        <P>Ou: <span>Entre sem uma conta</span></P>
+        {!registerFields && (
+          <P style={{ paddingBottom: 10 }}>
+            Ou: <span>Entre sem uma conta</span>
+          </P>
+        )}
       </Main>
     </Container>
   );

@@ -17,7 +17,7 @@ export const PrimaryButton = styled.button`
 `;
 
 export const SecondaryButton = styled.button`
-  padding: 13px 15px;
+  padding: 12px 14px;
   font-size: 18px;
   border: none;
   outline: none;

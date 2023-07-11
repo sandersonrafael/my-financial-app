@@ -42,7 +42,6 @@ export const MainHeader = styled.h1`
 export const P = styled.p`
   font-size: 17px;
   text-align: center;
-  padding: 0 0 10px;
 
   span {
     color: ${primaryColor};
@@ -56,7 +55,7 @@ export const P = styled.p`
 `;
 
 export const Input = styled.input`
-  margin: 0 40px 10px;
+  margin: 10px 40px 0;
   padding: 13px 15px;
   font-size: 18px;
   border: 1px solid #ccc;
@@ -80,4 +79,10 @@ export const AskCamp = styled.div`
       text-decoration: underline;
     }
   }
+`;
+
+export const Error = styled.p`
+  color: red;
+  font-size: 14px;
+  text-align: center;
 `;
