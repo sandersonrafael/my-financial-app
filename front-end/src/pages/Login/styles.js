@@ -74,7 +74,7 @@ export const AskCamp = styled.div`
     display: inline-block;
     color: rgb(13, 114, 177);
     font-weight: 600;
-    margin: 2px 0 14px 32px;
+    margin: 7px 0 14px 32px;
     border-radius: 10px;
 
     &:hover {

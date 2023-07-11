@@ -1,12 +1,12 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
-import { Link } from 'react-router-dom';
-import { Container, Main, MainHeader, Input, P } from './styles';
 import { AskCamp, Error } from './styles';
 import { PrimaryButton, SecondaryButton } from '../../components/Buttons';
 import { validateLogin, validateRegister } from '../../utils/validation';
+import { Container, Main, MainHeader, Input, P } from './styles';
 
-export default function Login() {
+export default function Login({ setLoggedIn }) {
   const [registerFields, setRegisterFields] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,6 +22,7 @@ export default function Login() {
   };
 
   const handleLoginOrRegister = () => {
+    let newErrors = {};
     if (registerFields) {
       const { emailMsgs, passwordMsgs, repeatPasswordMsgs } = validateRegister(
         email,
@@ -33,6 +34,8 @@ export default function Login() {
       const { emailMsgs, passwordMsgs } = validateLogin(email, password);
       setErrors({ emailMsgs, passwordMsgs });
     }
+    for ()
+
   };
 
   return (
@@ -83,7 +86,7 @@ export default function Login() {
 
         {!registerFields && (
           <AskCamp>
-            <Link to="/forgot-password">Esqueceu sua senha?</Link>
+            <a>Esqueceu sua senha?</a>
           </AskCamp>
         )}
 
@@ -97,7 +100,7 @@ export default function Login() {
         <P>{registerFields ? 'Já' : 'Ainda não'} possui uma conta?</P>
 
         <SecondaryButton
-          style={{ margin: `5px 40px ${registerFields ? '33px' : '15px'}` }}
+          style={{ margin: `5px 40px ${registerFields ? '33px' : '10px'}` }}
           onClick={handleChangeLoginRegister}
         >
           {registerFields ? 'Faça Login' : 'Registre-se'}
@@ -112,3 +115,7 @@ export default function Login() {
     </Container>
   );
 }
+
+Login.propTypes = {
+  setLoggedIn: PropTypes.func.isRequired,
+};
