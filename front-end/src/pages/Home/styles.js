@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { primaryGradient } from '../../colors/colors';
+import { primaryGradient, primaryColor } from '../../colors/colors';
 
 export const Container = styled.div`
 
@@ -7,12 +7,12 @@ export const Container = styled.div`
 
 export const BackgroundTop = styled.div`
   background-image: ${primaryGradient};
-  width: 100vw;
+  width: 100%;
 
   h1 {
     text-align: center;
     padding: 30px 10px 120px;
-    color: #eee;
+    color: #fff;
     font-weight: 600;
     font-size: 36px;
   }
@@ -26,10 +26,25 @@ export const Main = styled.main`
   border-radius: 16px;
   box-shadow: 0 0 5px 2px rgba(0, 0, 0, .15);
 
-  h2 {
+  &>h2 {
     text-align: center;
     font-weight: 600;
     color: #444;
-    padding: 15px 10px
+    padding: 15px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+      opacity: .8;
+      text-decoration: underline;
+    }
+
+    svg {
+      color: ${primaryColor};
+      font-size: 24px;
+      margin-left: 10px;
+    }
   }
 `;
