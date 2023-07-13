@@ -1,16 +1,24 @@
 import { useEffect, useState } from 'react';
 import Calendar from '../../components/Calendar';
-import { BackgroundTop, Container, Main } from './styles';
+import { BackgroundTop, Container, DateSelector, Main } from './styles';
 import { BiSolidDownArrowCircle, BiSolidUpArrowCircle } from 'react-icons/bi';
+import { monthsList } from '../../utils/dateArrays';
 
 export default function Home() {
   const [userName, setUserName] = useState('Visitante');
   const [date, setDate] = useState({});
-  const [showCalendar, setShowCalendar] = useState(true);
+  const [showCalendar, setShowCalendar] = useState(false); //botar true
 
   const handleArrowClick = () => {
     setShowCalendar(!showCalendar);
   };
+
+  useEffect(() => {
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth();
+    const date = new Date().getDate();
+    setDate({ year, month, date });
+  }, []);
 
   useEffect(() => {
     setShowCalendar((value) => !value);
@@ -21,7 +29,7 @@ export default function Home() {
       <BackgroundTop>
         <h1>Boas vindas, {userName}!</h1>
       </BackgroundTop>
-      <Main>
+      <DateSelector>
         <h2 onClick={handleArrowClick}>
           Selecione uma data
           {showCalendar ? <BiSolidUpArrowCircle /> : <BiSolidDownArrowCircle />}
@@ -48,6 +56,22 @@ export default function Home() {
             display: showCalendar ? 'block' : 'none',
           }}
         />
+      </DateSelector>
+      <Main>
+        <header>
+          <h1>
+            <span>{date.date < 10 ? '0' + date.date : date.date} de </span>
+            <span>{monthsList[date.month]} de </span>
+            <span>{date.year}</span>
+          </h1>
+          <hr />
+        </header>
+
+        <div>
+          entradas e saídas, etc...
+        </div>
+        <hr />
+        <footer>resultados etc...</footer>
       </Main>
     </Container>
   );
