@@ -50,7 +50,9 @@ export const Header = styled.header`
   }
 `;
 
-export const Body = styled.div``;
+export const Body = styled.div`
+  margin-bottom: 50px;
+`;
 
 export const BodyTop = styled.div`
   width: 100%;
@@ -67,11 +69,11 @@ export const BodyMain = styled.main`
   margin: -78px auto 0;
   max-width: 940px;
   background-color: #fff;
-  box-shadow: 0 0 10px 5px ${primaryColor}22 /* rgba(0, 0, 0, .15) */;
+  box-shadow: 0 0 10px 5px ${primaryColor}22;
   border-radius: 8px;
   border: 1px solid #eee;
 
-  h2 {
+  &>h2 {
     text-align: center;
     padding: 20px 10px;
     font-weight: 500;

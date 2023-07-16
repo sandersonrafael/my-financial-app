@@ -7,6 +7,7 @@ import Calendar from '../../components/Calendar';
 import { Body, BodyMain, BodyTop, Container, Footer, Header } from './styles';
 import { primaryColor } from '../../colors/colors';
 import { useEffect, useState } from 'react';
+import FinancialGrid from './FinancialGrid';
 
 export default function Home({ userName, loggedIn }) {
   const [calendarVisibility, setCalendarVisibility] = useState(false);
@@ -28,10 +29,9 @@ export default function Home({ userName, loggedIn }) {
             <img src={logo} alt="My Financial App" />
           </Link>
           <div>
-            <Link>Home</Link>
-            <Link>Finanças</Link>
-            <Link>Relatórios</Link>
-            <Link>{ loggedIn ? 'Dados de Usuário' : 'Fazer Login'}</Link>
+            <Link to="/user">{ loggedIn ? 'Meus Dados' : 'Fazer Login'}</Link>
+            <Link to="/myfinancial">Meu Financeiro</Link>
+            <Link to="/myreports">Meus Relatórios</Link>
           </div>
         </div>
       </Header>
@@ -79,6 +79,8 @@ export default function Home({ userName, loggedIn }) {
               </button>
             </div>
           </section>
+
+          <FinancialGrid />
         </BodyMain>
       </Body>
 
