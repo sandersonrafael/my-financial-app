@@ -7,14 +7,6 @@ export const Container = styled.div`
   background-color: #fff;
   box-shadow: 0 0 7px 3px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
-
-  h1 {
-    text-align: center;
-    margin: 0;
-    font-size: 24px;
-    font-weight: 400;
-    margin: 5px 0 10px;
-  }
 `;
 
 export const MonthsFlex = styled.div`

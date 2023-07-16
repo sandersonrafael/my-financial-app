@@ -59,12 +59,12 @@ export const BodyTop = styled.div`
   h1 {
     text-align: center;
     color: #fff;
-    padding: 30px 10px 130px;
+    padding: 20px 10px 100px;
   }
 `;
 
 export const BodyMain = styled.main`
-  margin: -100px auto 0;
+  margin: -78px auto 0;
   max-width: 940px;
   background-color: #fff;
   box-shadow: 0 0 10px 5px ${primaryColor}22 /* rgba(0, 0, 0, .15) */;
@@ -75,6 +75,45 @@ export const BodyMain = styled.main`
     text-align: center;
     padding: 20px 10px;
     font-weight: 500;
+    border-bottom: 1px solid #ccc;
+  }
+
+  &>section {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    height: fit-content;
+    border-bottom: 1px solid #ccc;
+
+    &>div {
+      &>button {
+        border: 1px solid #ddd;
+        font-size: 17px;
+        border-radius: 8px;
+        padding: 12px;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        background-color: ${primaryColor};
+        color: #fff;
+        display: flex;
+        gap: 7px;
+        height: fit-content;
+        width: fit-content;
+
+        &>svg {
+          font-size: 18px;
+        }
+
+        &:hover {
+          opacity: .8;
+        }
+
+        &:active {
+          opacity: .9;
+        }
+      }
+    }
   }
 `;
 

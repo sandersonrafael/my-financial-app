@@ -5,8 +5,8 @@ import { BrowserRouter } from 'react-router-dom';
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(true);
-  const [guest, setGuest] = useState(false);
-  console.log('remover o true do lggedIn');
+  const [guest, setGuest] = useState(true);
+  console.log('remover o true do guest');
   console.log('remover o BrowserRouter');
   console.log('adicionar informação de userName com useEffect, buscando no storage ou db');
 
@@ -14,7 +14,7 @@ export default function App() {
     <Login setLoggedIn={setLoggedIn} setGuest={setGuest} />
   ) : (
     <BrowserRouter>
-      <Home />
+      <Home loggedIn={loggedIn} />
     </BrowserRouter>
   );
 }

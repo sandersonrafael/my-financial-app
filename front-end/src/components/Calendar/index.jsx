@@ -59,11 +59,9 @@ export default function Calendar({
 
   return (
     <Container style={style}>
-      <h1>{calendar.currentYear}</h1>
-      <hr />
       <MonthsFlex $primaryColor={primaryColor}>
         <BsArrowLeftSquareFill onClick={() => setRelativeMonth((v) => v - 1)} />
-        <h2>{monthsList[calendar.currentMonth]}</h2>
+        <h1>{monthsList[calendar.currentMonth]}, {calendar.currentYear}</h1>
         <BsArrowRightSquareFill
           onClick={() => setRelativeMonth((v) => v + 1)}
         />
