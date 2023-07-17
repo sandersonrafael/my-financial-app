@@ -1,24 +1,43 @@
 import styled from 'styled-components';
 
+export const NoExpenses = styled.div`
+  padding: 15px;
+  h3 {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 500;
+  }
+`;
+
 export const Container = styled.div`
   width: calc(100% - 30);
   padding: 15px;
   font-size: 17px;
+  font-weight: 500;
 
   * {
     padding: 1.5px 5px;
   }
 
-  &>div {
+  &>div,
+  &>header,
+  &>footer {
     display: grid;
-    grid-template-columns: 2fr 1fr .7fr .7fr;
+    grid-template-columns: 1.6fr 1.2fr .7fr .5fr;
     text-align: center;
   }
+  &>footer {
+    border-top: 1px solid #ccc;
+    &>h3 {
+      padding: 15px 5px 0;
+    }
+  }
 
-  h3 {
+  div>h3,
+  header>h3 {
     font-weight: 600;
     font-size: 22px;
-    padding: 0 5px 15px
+    padding: 0 5px 15px;
   }
 
   svg {
