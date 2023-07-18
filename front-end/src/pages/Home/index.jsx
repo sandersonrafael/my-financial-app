@@ -12,41 +12,21 @@ import { primaryColor } from '../../colors/colors';
 import { useEffect, useState } from 'react';
 import FinancialGrid from './FinancialGrid';
 import NewExpenseGrid from './NewExpenseGrid';
+import { getDailyReportStorage } from '../../db/localStorage';
 
 export default function Home({ userName, loggedIn }) {
   const [calendarVisibility, setCalendarVisibility] = useState(false);
   const [newExpenseVisibility, setNewExpenseVisibility] = useState(false);
-  const [userExpenses, setUserExpenses] = useState(
-    /* localStorage.getItem('userExpenses') || [] */ [
-      {
-        title: 'Compra de celular novo',
-        category: 'Eletrônicos',
-        value: 1150.5,
-        expense: true,
-      },
-      { title: 'Salário', category: 'Salário', value: 1320, expense: false },
-      {
-        title: 'Compra de carne',
-        category: 'Alimentação',
-        value: 50.7,
-        expense: true,
-      },
-      {
-        title: 'Venda de brinco',
-        category: 'Vendas',
-        value: 149.9,
-        expense: false,
-      },
-    ],
-  );
   const [date, setDate] = useState({
-    date: new Date().getDate(),
-    month: new Date().getMonth(),
     year: new Date().getFullYear(),
+    month: new Date().getMonth(),
+    date: new Date().getDate(),
   });
-
+  const [userExpenses, setUserExpenses] = useState(getDailyReportStorage(date));
+  console.log(typeof date.date);
   useEffect(() => {
     setCalendarVisibility(false);
+    setUserExpenses(getDailyReportStorage(date));
   }, [date]);
 
   const handleNewExpenseClick = () => {
@@ -111,16 +91,20 @@ export default function Home({ userName, loggedIn }) {
                 <BsFillPlusCircleFill />
                 {'Adicionar'}
               </button>
-              {newExpenseVisibility &&
+              {newExpenseVisibility && (
                 <NewExpenseGrid
+                  date={date}
                   setVisibility={setNewExpenseVisibility}
                   setUserExpenses={setUserExpenses}
                 />
-              }
+              )}
             </div>
           </section>
 
-          <FinancialGrid userExpenses={userExpenses} setUserExpenses={setUserExpenses} />
+          <FinancialGrid
+            userExpenses={userExpenses}
+            setUserExpenses={setUserExpenses}
+          />
         </BodyMain>
       </Body>
 

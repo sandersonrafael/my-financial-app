@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 
 import { Container } from './styles';
 import { PrimaryButton, SecondaryButton } from '../../../components/Buttons';
+import { getDailyReportStorage, setDailyReportStorage } from '../../../db/localStorage';
 
 export default function NewExpenseGrid({
   setVisibility,
   setUserExpenses,
   edit,
   editIndex,
+  date,
 }) {
   const [title, setTitle] = useState(edit?.title ?? '');
   const [category, setCategory] = useState(edit?.category ?? '');
@@ -23,26 +25,31 @@ export default function NewExpenseGrid({
     setExpense(false);
   };
 
+  console.log('Fazer avisos para quando o usuário digitar algum valor incorreto ou em branco');
+  console.log('Estilizar melhor o newExpenseGrid');
+
   const handleAddExpense = () => {
-    if (title !== '' && category !== '' && value !== '') {
-      if (edit) {
-        setUserExpenses((expenses) => {
-          const newExpenses = [...expenses];
-          newExpenses[editIndex] = {
-            title,
-            category,
-            value,
-            expense,
-          };
-          return newExpenses;
-        });
-      } else {
-        setUserExpenses((expenses) => [
-          ...expenses,
-          { title, category, value, expense },
-        ]);
-      }
-    }
+    setDailyReportStorage(date, { title, category, value, expense }, editIndex);
+    setUserExpenses(getDailyReportStorage(date));
+    // if (title !== '' && category !== '' && value !== '') {
+    //   if (edit) {
+    //     setUserExpenses((expenses) => {
+    //       const newExpenses = [...expenses];
+    //       newExpenses[editIndex] = {
+    //         title,
+    //         category,
+    //         value,
+    //         expense,
+    //       };
+    //       return newExpenses;
+    //     });
+    //   } else {
+    //     setUserExpenses((expenses) => [
+    //       ...expenses,
+    //       { title, category, value, expense },
+    //     ]);
+    //   }
+    // }
     clearStates();
   };
 
@@ -76,7 +83,7 @@ export default function NewExpenseGrid({
           />
           <select
             value={expense}
-            onChange={(e) => setExpense(Boolean(e.target.value))}
+            onChange={(e) => setExpense(e.target.value === 'true')}
           >
             <option value={false}>Receita</option>
             <option value={true}>Despeza</option>
@@ -103,4 +110,9 @@ NewExpenseGrid.propTypes = {
     expense: PropTypes.bool.isRequired,
   }),
   editIndex: PropTypes.number,
+  date: PropTypes.shape({
+    year: PropTypes.number.isRequired,
+    month: PropTypes.number.isRequired,
+    date: PropTypes.number.isRequired,
+  }),
 };
