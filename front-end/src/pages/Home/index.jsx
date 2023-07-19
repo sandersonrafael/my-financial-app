@@ -23,7 +23,6 @@ export default function Home({ userName, loggedIn }) {
     date: new Date().getDate(),
   });
   const [userExpenses, setUserExpenses] = useState(getDailyReportStorage(date));
-  console.log(typeof date.date);
   useEffect(() => {
     setCalendarVisibility(false);
     setUserExpenses(getDailyReportStorage(date));
@@ -102,6 +101,7 @@ export default function Home({ userName, loggedIn }) {
           </section>
 
           <FinancialGrid
+            date={date}
             userExpenses={userExpenses}
             setUserExpenses={setUserExpenses}
           />

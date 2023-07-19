@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 
 import { Container, NoExpenses } from './styles';
 import NewExpenseGrid from '../NewExpenseGrid';
+import { deleteDailyReportStorage, getDailyReportStorage } from '../../../db/localStorage';
 
-export default function FinancialGrid({ userExpenses, setUserExpenses }) {
+export default function FinancialGrid({ userExpenses, setUserExpenses, date }) {
   const [total, setTotal] = useState(0);
   const [editIndex, setEditIndex] = useState(null);
   const [editVisibility, setEditVisibility] = useState(false);
@@ -18,23 +19,15 @@ export default function FinancialGrid({ userExpenses, setUserExpenses }) {
   }, [userExpenses]);
 
   const openEditScreen = (index) => {
-    console.log(userExpenses[index]);
     setEdit(userExpenses[index]);
     setEditIndex(index);
     setEditVisibility(true);
   };
 
   const handleDelete = (index) => {
-    const newUserExpenses = [...userExpenses];
-    newUserExpenses.splice(index, 1);
-
-    console.log('Adicionar o local Storage para deletar o item');
-    setUserExpenses(newUserExpenses);
-  };
-
-  const handleDeleteAll = () => {
-    console.log('Adicionar o localStorage para limpar todos os dados do dia');
-    setUserExpenses([]);
+    index = typeof index === 'number' ? index : null;
+    deleteDailyReportStorage(date, index);
+    setUserExpenses(getDailyReportStorage(date));
   };
 
   return userExpenses.length === 0 ? (
@@ -55,7 +48,7 @@ export default function FinancialGrid({ userExpenses, setUserExpenses }) {
           <div key={index}>
             <span>{title}</span>
             <span>{category}</span>
-            <span style={{ color: expense ? 'red' : 'green' }}>
+            <span style={{ color: value !== 0 ? expense ? 'red': 'green' : '#555' }}>
               {expense && '-'}
               {value.toLocaleString('pt-BR', {
                 style: 'currency',
@@ -85,7 +78,7 @@ export default function FinancialGrid({ userExpenses, setUserExpenses }) {
           <h3>
             {userExpenses.length > 0 && <BiSolidTrash
               color="#ff5f5f"
-              onClick={handleDeleteAll}
+              onClick={handleDelete}
             />}
           </h3>
         </footer>
@@ -97,6 +90,7 @@ export default function FinancialGrid({ userExpenses, setUserExpenses }) {
           setUserExpenses={setUserExpenses}
           editIndex={editIndex}
           edit={edit}
+          date={date}
         />
       }
     </>
@@ -113,4 +107,9 @@ FinancialGrid.propTypes = {
     }),
   ).isRequired,
   setUserExpenses: PropTypes.func.isRequired,
+  date: PropTypes.shape({
+    year: PropTypes.number.isRequired,
+    month: PropTypes.number.isRequired,
+    date: PropTypes.number.isRequired,
+  }).isRequired,
 };

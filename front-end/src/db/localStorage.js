@@ -14,19 +14,37 @@ export const getDailyReportStorage = (fullDate) => {
 };
 
 export const setDailyReportStorage = (fullDate, newExpense, index) => {
-  // aplicar lógica para editar aqui. Se receber um index, usar o index para editar...
   const { year, month, date } = fullDate;
   const fullReport = getFullReportStorage();
+
   fullReport[year] = fullReport[year] || {};
   fullReport[year][month] = fullReport[year][month] || {};
   fullReport[year][month][date] = fullReport[year][month][date] || [];
 
-  if (index) {
-    console.log('Fazer lógica de edição');
+  if (index !== undefined) {
+    fullReport[year][month][date][index] = newExpense;
   } else {
     fullReport[year][month][date].push(newExpense);
-    localStorage.setItem('userExpenses', JSON.stringify(fullReport));
   }
+  localStorage.setItem('userExpenses', JSON.stringify(fullReport));
 };
 
-// fazer o de editar e o de deletar...
+export const deleteDailyReportStorage = (fullDate, index) => {
+  const { year, month, date } = fullDate;
+  const fullReport = getFullReportStorage();
+
+  if (fullReport[year][month][date].length === 1 || index === null) {
+    if (Object.keys(fullReport[year][month]).length === 1) {
+      if (Object.keys(fullReport[year]).length === 1) {
+        return localStorage.removeItem('userExpenses');
+      } else {
+        delete fullReport[year][month];
+      }
+    } else {
+      delete fullReport[year][month][date];
+    }
+  } else {
+    fullReport[year][month][date].splice(index, 1);
+  }
+  localStorage.setItem('userExpenses', JSON.stringify(fullReport));
+};

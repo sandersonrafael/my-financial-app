@@ -31,25 +31,6 @@ export default function NewExpenseGrid({
   const handleAddExpense = () => {
     setDailyReportStorage(date, { title, category, value, expense }, editIndex);
     setUserExpenses(getDailyReportStorage(date));
-    // if (title !== '' && category !== '' && value !== '') {
-    //   if (edit) {
-    //     setUserExpenses((expenses) => {
-    //       const newExpenses = [...expenses];
-    //       newExpenses[editIndex] = {
-    //         title,
-    //         category,
-    //         value,
-    //         expense,
-    //       };
-    //       return newExpenses;
-    //     });
-    //   } else {
-    //     setUserExpenses((expenses) => [
-    //       ...expenses,
-    //       { title, category, value, expense },
-    //     ]);
-    //   }
-    // }
     clearStates();
   };
 
