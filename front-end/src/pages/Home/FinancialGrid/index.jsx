@@ -71,7 +71,7 @@ export default function FinancialGrid({ userExpenses, setUserExpenses, date }) {
         ))}
         <footer>
           <h3>Total</h3>
-          <h3>{total > 0 ? 'Lucro' : total === 0 ? 'Neutro' : 'Despeza' }</h3>
+          <h3>{total > 0 ? 'Lucro' : total === 0 ? 'Neutro' : 'Despesa' }</h3>
           <h3 style={{ color: total > 0 ? 'green' : total === 0 ? '#333' : 'red' }}>
             {total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
           </h3>

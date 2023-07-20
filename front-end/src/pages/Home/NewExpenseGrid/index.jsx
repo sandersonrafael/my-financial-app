@@ -67,7 +67,7 @@ export default function NewExpenseGrid({
             onChange={(e) => setExpense(e.target.value === 'true')}
           >
             <option value={false}>Receita</option>
-            <option value={true}>Despeza</option>
+            <option value={true}>Despesa</option>
           </select>
         </div>
         <section>
