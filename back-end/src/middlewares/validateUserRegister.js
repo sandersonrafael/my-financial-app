@@ -25,7 +25,7 @@ const validateUserRegister = async (req, res, next) => {
   if (email.length === 0) errors.emailMsgs.push('E-mail não pode estar vazio');
   if (!validator.isEmail(email)) errors.emailMsgs.push('E-mail inválido');
 
-  const userExists = await User.findOne({ email: email });
+  const userExists = await User.findOne({ email });
   if (userExists) return res.status(400).json({
     message: 'E-mail informado já está em uso',
   });
