@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => res.status(200).json({ message: 'Ok, deu certo!' }));
+const validateUserRegister = require('./middlewares/validateUserRegister');
+const userController = require('./controllers/userController');
+
+router.post('/register', validateUserRegister, userController.register);
 
 module.exports = router;

@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/UserModel');
 
 const validateUserRegister = async (req, res, next) => {
+  req.body.email = req.body.email.toLowerCase();
   const { name, email, password, repeatPassword } = req.body;
   const errors = {
     nameMsgs: [],
@@ -10,6 +11,10 @@ const validateUserRegister = async (req, res, next) => {
     passwordMsgs: [],
     repeatPasswordMsgs: [],
   };
+
+  if (!name || !email || !password || !repeatPassword) return res.status(400).json({
+    message: 'Necessário preencher todos os campos antes de tentar realizar o registro',
+  });
 
   // name validate
   if (name.length === 0) errors.nameMsgs.push('Nome não pode estar vazio');
@@ -20,11 +25,13 @@ const validateUserRegister = async (req, res, next) => {
   if (email.length === 0) errors.emailMsgs.push('E-mail não pode estar vazio');
   if (!validator.isEmail(email)) errors.emailMsgs.push('E-mail inválido');
 
-  const userExists = await User.findOne({ email });
-  if (userExists) errors.emailMsgs.push('E-mail informado já está em uso');
+  const userExists = await User.findOne({ email: email });
+  if (userExists) return res.status(400).json({
+    message: 'E-mail informado já está em uso',
+  });
 
   //password validate
-  if (password.length < 4 || password.length > 16)
+  if (password.length < 4 || password?.length > 16)
     errors.passwordMsgs.push('Senha deve conter de 4 a 16 caracteres');
   if (
     !password.match(/[a-z]/g) ||
@@ -32,6 +39,7 @@ const validateUserRegister = async (req, res, next) => {
     !password.match(/[0-9]/g) ||
     !password.match(/[\W]/g)
   ) errors.passwordMsgs.push('Senha deve conter letras maiúsculas, minúsculas, números e símbolos');
+  if (password.indexOf(' ') !== -1) errors.passwordMsgs.push('Senha não pode conter espaços');
 
   //repeatPassword validate
   if (repeatPassword.length === 0)
@@ -41,10 +49,10 @@ const validateUserRegister = async (req, res, next) => {
 
   if (
     errors.nameMsgs.length !== 0 ||
-      errors.emailMsgs.nameMsgs.length !== 0 ||
-      errors.passwordMsgs.nameMsgs.length !== 0 ||
-      errors.repeatPasswordMsgs.nameMsgs.length !== 0
-  ) return errors;
+    errors.emailMsgs.length !== 0 ||
+    errors.passwordMsgs.length !== 0 ||
+    errors.repeatPasswordMsgs.length !== 0
+  ) return res.status(400).json(errors);
 
   try {
     req.body.password = await bcrypt.hash(password, 12);
