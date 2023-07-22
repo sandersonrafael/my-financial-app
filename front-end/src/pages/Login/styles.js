@@ -11,6 +11,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 30px 15px;
 
   background-image: ${primaryGradient};
@@ -22,7 +23,6 @@ export const Container = styled.div`
 `;
 
 export const Main = styled.main`
-  margin-top: 12%;
   display: flex;
   flex-direction: column;
   background-color: #fff;

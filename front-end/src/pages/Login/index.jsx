@@ -8,6 +8,7 @@ import { Container, Main, MainHeader, Input, P } from './styles';
 
 export default function Login({ setLoggedIn, setGuest }) {
   const [registerFields, setRegisterFields] = useState(false);
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
@@ -16,6 +17,7 @@ export default function Login({ setLoggedIn, setGuest }) {
   const handleChangeLoginRegister = () => {
     setRegisterFields(!registerFields);
     setErrors({});
+    setName('');
     setEmail('');
     setPassword('');
     setRepeatPassword('');
@@ -43,6 +45,15 @@ export default function Login({ setLoggedIn, setGuest }) {
         </MainHeader>
 
         <P>Tenha o controle da sua vida financeira!</P>
+
+        {registerFields && (
+          <Input
+            type="text"
+            placeholder="Digite o nome completo"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        )}
 
         <Input
           type="email"

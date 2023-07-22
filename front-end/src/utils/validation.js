@@ -35,6 +35,7 @@ export const validateRegister = (email, password, repeatPassword) => {
   email = email.toLowerCase();
 
   const errors = {
+    nameMsgs: [],
     emailMsgs: [],
     passwordMsgs: [],
     repeatPasswordMsgs: [],
