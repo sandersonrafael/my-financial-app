@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 
 import { AskCamp, Error } from './styles';
 import { PrimaryButton, SecondaryButton } from '../../components/Buttons';
-import { validateLogin, validateRegister } from '../../utils/validation';
 import { Container, Main, MainHeader, Input, P } from './styles';
+import { userLogin, userRegister } from '../../db/dataProcess';
 
 export default function Login({ setLoggedIn, setGuest }) {
   const [registerFields, setRegisterFields] = useState(false);
+  const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,18 +24,18 @@ export default function Login({ setLoggedIn, setGuest }) {
     setRepeatPassword('');
   };
 
-  const handleLoginOrRegister = () => {
-    let newErrors = {};
-    if (registerFields) {
-      newErrors = validateRegister(email, password, repeatPassword);
-    } else {
-      newErrors = validateLogin(email, password);
-    }
-    for (const key in newErrors) {
-      if (newErrors[key].length > 0) return setErrors(newErrors);
-    }
-    setLoggedIn(true);
-    return setErrors({});
+  const handleLoginOrRegister = async () => {
+    const connectUser = registerFields
+      ? await userRegister(name, email, password, repeatPassword)
+      : await userLogin(email, password);
+
+    if (connectUser.id && connectUser.name && connectUser.email) {
+      setId(connectUser.id);
+      setName(connectUser.name);
+      setEmail(connectUser.email);
+      setLoggedIn(true);
+      setErrors({});
+    } else setErrors({ ...connectUser });
   };
 
   return (
@@ -54,6 +55,10 @@ export default function Login({ setLoggedIn, setGuest }) {
             onChange={(e) => setName(e.target.value)}
           />
         )}
+        {errors.nameMsgs &&
+          errors.nameMsgs.map((value, key) => (
+            <Error key={key}>{value}</Error>
+          ))}
 
         <Input
           type="email"
@@ -98,6 +103,7 @@ export default function Login({ setLoggedIn, setGuest }) {
           </AskCamp>
         )}
 
+        {errors.message && <Error>{errors.message}</Error> }
         <PrimaryButton
           style={{ margin: '10px 40px 15px' }}
           onClick={handleLoginOrRegister}
