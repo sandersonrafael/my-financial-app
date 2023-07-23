@@ -17,7 +17,7 @@ const mongoDB = {
       return jsonResponse;
 
     } catch (error) {
-      return { message: 'Erro durante a operação.', error };
+      return { message: 'Erro no servidor. Tente novamente mais tarde.', error };
     }
   },
   userRegister: async (name, email, password, repeatPassword) => {

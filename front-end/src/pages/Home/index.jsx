@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import logo from '../../assets/homelogo.png';
 import {
   BsFillArrowDownCircleFill,
   BsFillPlusCircleFill,
@@ -13,6 +12,8 @@ import { useEffect, useState } from 'react';
 import FinancialGrid from './FinancialGrid';
 import NewExpenseGrid from './NewExpenseGrid';
 import { getDailyReportStorage } from '../../db/localStorage';
+
+const logo = 'https://images2.imgbox.com/50/4c/tVvk0H0O_o.png';
 
 export default function Home({ userName, loggedIn }) {
   const [calendarVisibility, setCalendarVisibility] = useState(false);
