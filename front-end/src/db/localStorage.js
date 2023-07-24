@@ -36,7 +36,11 @@ export const deleteDailyReportStorage = (fullDate, index) => {
   if (fullReport[year][month][date].length === 1 || index === null) {
     if (Object.keys(fullReport[year][month]).length === 1) {
       if (Object.keys(fullReport[year]).length === 1) {
-        return localStorage.removeItem('userExpenses');
+        if (Object.keys(fullReport).length === 1) {
+          return localStorage.removeItem('userExpenses');
+        } else {
+          delete fullReport[year];
+        }
       } else {
         delete fullReport[year][month];
       }

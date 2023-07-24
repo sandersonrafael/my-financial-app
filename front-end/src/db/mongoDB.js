@@ -39,6 +39,18 @@ const mongoDB = {
       return { message: 'Falha no cadastro do usuário', error };
     }
   },
+  userAccess: async (id, token) => {
+    try {
+      const res = await fetch(
+        `${host}/users/${id}`, { method: 'GET', headers: { Authorization: `Bearer ${token}` } },
+      );
+      const jsonResponse = res.json();
+
+      return jsonResponse;
+    } catch(error) {
+      return false;
+    }
+  },
 };
 
 export default mongoDB;

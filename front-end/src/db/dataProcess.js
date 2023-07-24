@@ -1,15 +1,18 @@
 import { validateLogin, validateRegister } from '../utils/validation';
 import mongoDB from './mongoDB';
 
+const saveUserAccess = (id, token) => localStorage.setItem('userAccess', `${id} ${token}`);
+
 export const userLogin = async (email, password) => {
   let errors = validateLogin(email, password);
 
   if (!errors) {
     const loginReturn = await mongoDB.userLogin(email, password);
-    if (loginReturn.id && loginReturn.name && loginReturn.email) {
-      const { id, name, email } = loginReturn;
+    if (loginReturn.id) {
+      const { id, name, email, token } = loginReturn;
 
-      return { id, name, email };
+      saveUserAccess(id, token);
+      return { id, name, email, token };
     } else errors = loginReturn;
   }
 
@@ -21,10 +24,11 @@ export const userRegister = async (name, email, password, repeatPassword) => {
 
   if (!errors) {
     const registerReturn = await mongoDB.userRegister(name, email, password, repeatPassword);
-    if (registerReturn.id && registerReturn.name && registerReturn.email) {
-      const { id, name, email } = registerReturn;
+    if (registerReturn.id) {
+      const { id, name, email, token } = registerReturn;
 
-      return { id, name, email };
+      saveUserAccess(id, token);
+      return { id, name, email, token };
     }
     else errors = registerReturn;
   }
@@ -32,4 +36,10 @@ export const userRegister = async (name, email, password, repeatPassword) => {
   return errors;
 };
 
-export const loadData = () => {};
+export const userAccess = async () => {
+  const idAndToken = localStorage.getItem('userAccess')?.split(' ');
+
+  return idAndToken
+    ? mongoDB.userAccess(idAndToken[0], idAndToken[1])
+    : false;
+};
