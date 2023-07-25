@@ -88,3 +88,24 @@ export const Error = styled.p`
   font-size: 14px;
   text-align: center;
 `;
+
+export const Spinner = styled.div`
+    width: 90px;
+    height: 90px;
+    border-radius: 45px;
+    background-color: transparent;
+    animation: spin 1.4s ease-in-out infinite;
+  svg {
+    font-size: 90px;
+    color: white;
+  }
+
+  @keyframes spin {
+    0% {
+      rotate: 0deg;
+    }
+    100% {
+      rotate: 360deg;
+    }
+  }
+`;

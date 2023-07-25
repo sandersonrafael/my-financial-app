@@ -60,7 +60,7 @@ export default function NewExpenseGrid({
           <input
             type="number"
             value={value}
-            onChange={(e) => setValue(Number(e.target.value))}
+            onChange={(e) => setValue(e.target.value !== '' ? Number(e.target.value) : '')}
           />
           <select
             value={expense}

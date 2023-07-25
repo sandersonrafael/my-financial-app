@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { AskCamp, Error } from './styles';
-import { PrimaryButton, SecondaryButton } from '../../components/Buttons';
 import { Container, Main, MainHeader, Input, P } from './styles';
+import { AskCamp, Error, Spinner } from './styles';
+import { PrimaryButton, SecondaryButton } from '../../components/Buttons';
 import { userLogin, userRegister } from '../../db/dataProcess';
+import { ImSpinner10 } from 'react-icons/im';
 
-export default function Login({ setLoggedIn, setGuest }) {
+export default function Login({ setLoggedIn, setGuest, loading }) {
   const [registerFields, setRegisterFields] = useState(false);
-  const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,8 +29,7 @@ export default function Login({ setLoggedIn, setGuest }) {
       ? await userRegister(name, email, password, repeatPassword)
       : await userLogin(email, password);
 
-    if (connectUser.id && connectUser.name && connectUser.email) {
-      setId(connectUser.id);
+    if (connectUser.id) {
       setName(connectUser.name);
       setEmail(connectUser.email);
       setLoggedIn(true);
@@ -40,92 +39,98 @@ export default function Login({ setLoggedIn, setGuest }) {
 
   return (
     <Container>
-      <Main>
-        <MainHeader>
-          {registerFields ? 'Crie Sua Conta' : 'Faça Login'}
-        </MainHeader>
+      {loading ? (
+        <Spinner>
+          <ImSpinner10 />
+        </Spinner>
+      ) : (
+        <Main>
+          <MainHeader>
+            {registerFields ? 'Crie Sua Conta' : 'Faça Login'}
+          </MainHeader>
 
-        <P>Tenha o controle da sua vida financeira!</P>
+          <P>Tenha o controle da sua vida financeira!</P>
 
-        {registerFields && (
-          <Input
-            type="text"
-            placeholder="Digite o nome completo"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        )}
-        {errors.nameMsgs &&
+          {registerFields && (
+            <Input
+              type="text"
+              placeholder="Digite o nome completo"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          )}
+          {errors.nameMsgs &&
           errors.nameMsgs.map((value, key) => (
             <Error key={key}>{value}</Error>
           ))}
 
-        <Input
-          type="email"
-          placeholder="Digite seu E-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        {errors.emailMsgs &&
+          <Input
+            type="email"
+            placeholder="Digite seu E-mail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          {errors.emailMsgs &&
           errors.emailMsgs.map((value, key) => (
             <Error key={key}>{value}</Error>
           ))}
 
-        <Input
-          type="password"
-          placeholder="Digite sua Senha"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {errors.passwordMsgs &&
+          <Input
+            type="password"
+            placeholder="Digite sua Senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {errors.passwordMsgs &&
           errors.passwordMsgs.map((value, key) => (
             <Error key={key}>{value}</Error>
           ))}
 
-        {registerFields && (
-          <>
-            <Input
-              type="password"
-              placeholder="Confirme sua senha"
-              value={repeatPassword}
-              onChange={(e) => setRepeatPassword(e.target.value)}
-            />
-            {errors.repeatPasswordMsgs &&
+          {registerFields && (
+            <>
+              <Input
+                type="password"
+                placeholder="Confirme sua senha"
+                value={repeatPassword}
+                onChange={(e) => setRepeatPassword(e.target.value)}
+              />
+              {errors.repeatPasswordMsgs &&
               errors.repeatPasswordMsgs.map((value, key) => (
                 <Error key={key}>{value}</Error>
               ))}
-          </>
-        )}
+            </>
+          )}
 
-        {!registerFields && (
-          <AskCamp>
-            <a>Esqueceu sua senha?</a>
-          </AskCamp>
-        )}
+          {!registerFields && (
+            <AskCamp>
+              <a>Esqueceu sua senha?</a>
+            </AskCamp>
+          )}
 
-        {errors.message && <Error>{errors.message}</Error> }
-        <PrimaryButton
-          style={{ margin: '10px 40px 15px' }}
-          onClick={handleLoginOrRegister}
-        >
-          {registerFields ? 'Registrar-se' : 'Entrar'}
-        </PrimaryButton>
+          {errors.message && <Error>{errors.message}</Error> }
+          <PrimaryButton
+            style={{ margin: '10px 40px 15px' }}
+            onClick={handleLoginOrRegister}
+          >
+            {registerFields ? 'Registrar-se' : 'Entrar'}
+          </PrimaryButton>
 
-        <P>{registerFields ? 'Já' : 'Ainda não'} possui uma conta?</P>
+          <P>{registerFields ? 'Já' : 'Ainda não'} possui uma conta?</P>
 
-        <SecondaryButton
-          style={{ margin: `5px 40px ${registerFields ? '33px' : '10px'}` }}
-          onClick={handleChangeLoginRegister}
-        >
-          {registerFields ? 'Faça Login' : 'Registre-se'}
-        </SecondaryButton>
+          <SecondaryButton
+            style={{ margin: `5px 40px ${registerFields ? '33px' : '10px'}` }}
+            onClick={handleChangeLoginRegister}
+          >
+            {registerFields ? 'Faça Login' : 'Registre-se'}
+          </SecondaryButton>
 
-        {!registerFields && (
-          <P style={{ paddingBottom: 10 }}>
+          {!registerFields && (
+            <P style={{ paddingBottom: 10 }}>
             Ou: <span onClick={() => setGuest(true)}>Entre sem uma conta</span>
-          </P>
-        )}
-      </Main>
+            </P>
+          )}
+        </Main>
+      )}
     </Container>
   );
 }
@@ -133,4 +138,5 @@ export default function Login({ setLoggedIn, setGuest }) {
 Login.propTypes = {
   setLoggedIn: PropTypes.func.isRequired,
   setGuest: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
