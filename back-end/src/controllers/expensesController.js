@@ -3,9 +3,11 @@ const ExpenseList = require('../models/ExpensesModel');
 const list = async (req, res) => {
   try {
     const { id } = req.params;
-    const { fullReport } = await ExpenseList.findOne({ relatedId: id });
+    const expenseList = await ExpenseList.findOne({ relatedId: id });
 
-    return res.status(200).json(fullReport);
+    return expenseList ? res.status(200).json(expenseList.fullReport) : res.status(404).json({
+      message: 'Não há dados cadastrados para o usuário informado.',
+    });
   } catch(error) {
     res.status(500).json({ message: 'Ocorreu um erro no servidor. Tente novamente mais tarde!' });
   }

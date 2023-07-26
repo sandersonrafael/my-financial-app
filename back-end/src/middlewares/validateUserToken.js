@@ -7,7 +7,7 @@ const validateUserToken = async (req, res, next) => {
 
     const { id } = jwt.verify(token, secret);
 
-    if (id !== req.params.id) return res.status(401).json({ message: 'Token inválido!' });
+    if (id !== req.params.id) return res.status(401).json({ message: 'Token ou ID inválidos!' });
 
     return next();
   } catch (error) {

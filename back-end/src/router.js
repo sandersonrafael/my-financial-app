@@ -6,6 +6,8 @@ const validateUserLogin = require('./middlewares/validateUserLogin');
 const validateUserToken = require('./middlewares/validateUserToken');
 const validateExpenseCreate = require('./middlewares/validateExpenseCreate');
 const validateExpenseDelete = require('./middlewares/validateExpenseDelete');
+const validateDate = require('./middlewares/validateDate');
+
 const userController = require('./controllers/userController');
 const expensesController = require('./controllers/expensesController');
 
@@ -15,13 +17,25 @@ router.get('/users/:id', validateUserToken, userController.access);
 
 router.get('/user/expenses/:id', validateUserToken, expensesController.list);
 router.post(
-  '/user/expenses/:id', validateUserToken, validateExpenseCreate, expensesController.createOrUpdate,
+  '/user/expenses/:id',
+  validateUserToken,
+  validateExpenseCreate,
+  validateDate,
+  expensesController.createOrUpdate,
 );
 router.put(
-  '/user/expenses/:id', validateUserToken, validateExpenseCreate, expensesController.createOrUpdate,
+  '/user/expenses/:id',
+  validateUserToken,
+  validateExpenseCreate,
+  validateDate,
+  expensesController.createOrUpdate,
 );
 router.delete(
-  '/user/expenses/:id', validateUserToken, validateExpenseDelete, expensesController.deleteExpenses,
+  '/user/expenses/:id',
+  validateUserToken,
+  validateExpenseDelete,
+  validateDate,
+  expensesController.deleteExpenses,
 );
 
 module.exports = router;
