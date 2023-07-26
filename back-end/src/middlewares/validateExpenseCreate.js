@@ -1,4 +1,4 @@
-const validateNewExpense = (req, res, next) => {
+const validateExpenseCreate = (req, res, next) => {
   try {
     if (!req.body.fullDate) return res.status(400).json({
       message: 'Necessário informar um objeto "fullDate" contendo year, month e date.',
@@ -41,4 +41,4 @@ const validateNewExpense = (req, res, next) => {
   next();
 };
 
-module.exports = validateNewExpense;
+module.exports = validateExpenseCreate;

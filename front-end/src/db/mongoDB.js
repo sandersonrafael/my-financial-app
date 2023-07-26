@@ -1,4 +1,8 @@
 const host = import.meta.env.VITE_API_HOST;
+console.log(
+  'Ver a possbilidade de sincronizar sempre o ' +
+  'localStorage e o DB ou remover completamente o localStorage',
+);
 
 const mongoDB = {
   userLogin: async (email, password) => {

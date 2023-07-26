@@ -1,5 +1,16 @@
 const ExpenseList = require('../models/ExpensesModel');
 
+const list = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { fullReport } = await ExpenseList.findOne({ relatedId: id });
+
+    return res.status(200).json(fullReport);
+  } catch(error) {
+    res.status(500).json({ message: 'Ocorreu um erro no servidor. Tente novamente mais tarde!' });
+  }
+};
+
 const createOrUpdate = async (req, res) => {
   try {
     const { id } = req.params;
@@ -29,12 +40,59 @@ const createOrUpdate = async (req, res) => {
     } else {
       await ExpenseList.findOneAndUpdate({ relatedId }, { fullReport });
     }
-    res.status(200).json({ relatedId, fullReport });
+    res.status(200).json({ fullReport });
   } catch (error) {
     res.status(500).json({ message: 'Erro no servidor. Tente novamente mais tarde!' });
   }
 };
 
+const deleteExpenses = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { year, month, date } = req.body.fullDate;
+    const index = req.body.index;
+
+    const { relatedId, fullReport } = await ExpenseList.findOne({ relatedId: id });
+
+    if (!fullReport[year]) return res.status(400).json({
+      message: 'Não existem registros para o ano informado.',
+    });
+
+    if (!fullReport[year][month]) return res.status(400).json({
+      message: 'Não existem registros para o mês informado.',
+    });
+
+    if (!fullReport[year][month][date]) return res.status(400).json({
+      message: 'Não existem registros para o dia informado.',
+    });
+
+    if (index !== null && index !== undefined && !fullReport[year][month][date][index])
+      return res.status(400).json({
+        message: 'Índice não existe nas despesas do dia informado.',
+      });
+
+    if (fullReport[year][month][date].length === 1 || index === null || index === undefined) {
+      if (Object.keys(fullReport[year][month]).length === 1) {
+        if (Object.keys(fullReport[year]).length === 1) {
+          delete fullReport[year];
+        } else {
+          delete fullReport[year][month];
+        }
+      } else {
+        delete fullReport[year][month][date];
+      }
+    } else {
+      fullReport[year][month][date].splice(index, 1);
+    }
+    await ExpenseList.findOneAndUpdate({ relatedId }, { fullReport });
+    return res.status(200).json(fullReport);
+  } catch(error) {
+    res.status(500).json({ message: 'Ocorreu um erro no servidor. Tente novamente mais tarde!' });
+  }
+};
+
 module.exports = {
   createOrUpdate,
+  deleteExpenses,
+  list,
 };
