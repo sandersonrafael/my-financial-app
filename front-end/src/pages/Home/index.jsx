@@ -11,11 +11,17 @@ import { primaryColor } from '../../colors/colors';
 import { useEffect, useState } from 'react';
 import FinancialGrid from './FinancialGrid';
 import NewExpenseGrid from './NewExpenseGrid';
-import { getDailyReportStorage } from '../../db/localStorage';
+// import { getDailyReportStorage } from '../../db/localStorage';
+import { loadExpenses } from '../../db/dataProcess';
 
 const logo = 'https://images2.imgbox.com/50/4c/tVvk0H0O_o.png';
 
-export default function Home({ userName, loggedIn }) {
+const load = async (date) => {
+  const { fullReport } = await loadExpenses();
+  return fullReport?.[date.year]?.[date.month]?.[date.date] || [];
+};
+
+export default function Home({ loggedIn }) {
   const [calendarVisibility, setCalendarVisibility] = useState(false);
   const [newExpenseVisibility, setNewExpenseVisibility] = useState(false);
   const [date, setDate] = useState({
@@ -23,14 +29,26 @@ export default function Home({ userName, loggedIn }) {
     month: new Date().getMonth(),
     date: new Date().getDate(),
   });
-  const [userExpenses, setUserExpenses] = useState(getDailyReportStorage(date));
+  const [userExpenses, setUserExpenses] = useState([]);
+
   useEffect(() => {
+    const attList = async () => setUserExpenses(await load(date));
+    attList();
+  }, []);
+
+  useEffect(() => {
+    const attList = async () => setUserExpenses(await load(date));
+    attList();
     setCalendarVisibility(false);
-    setUserExpenses(getDailyReportStorage(date));
   }, [date]);
 
   const handleNewExpenseClick = () => {
     setNewExpenseVisibility(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('userAccess');
+    window.reload();
   };
 
   return (
@@ -42,15 +60,15 @@ export default function Home({ userName, loggedIn }) {
           </Link>
           <div>
             <Link to="/user">{loggedIn ? 'Meus Dados' : 'Fazer Login'}</Link>
-            <Link to="/financial">Meu Financeiro</Link>
             <Link to="/reports">Meus Relatórios</Link>
+            {loggedIn && <Link to="/" onClick={handleLogout} >Fazer Logout</Link>}
           </div>
         </div>
       </Header>
 
       <Body>
         <BodyTop>
-          <h1>Boas vindas, {userName || 'visitante'}!</h1>
+          <h1>Boas vindas, {localStorage.getItem('userAccess')?.split(' ')[2] || 'visitante'}!</h1>
         </BodyTop>
 
         <BodyMain>
@@ -126,6 +144,5 @@ export default function Home({ userName, loggedIn }) {
 }
 
 Home.propTypes = {
-  userName: PropTypes.string,
   loggedIn: PropTypes.bool.isRequired,
 };

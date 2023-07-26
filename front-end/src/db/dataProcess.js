@@ -1,7 +1,11 @@
 import { validateLogin, validateRegister } from '../utils/validation';
 import mongoDB from './mongoDB';
 
-const saveUserAccess = (id, token) => localStorage.setItem('userAccess', `${id} ${token}`);
+const getIdAndToken = () => localStorage.getItem('userAccess')?.split(' ') || ['', ''];
+
+const saveUserAccess = (id, token, name) => localStorage.setItem(
+  'userAccess', `${id} ${token} ${name}`,
+);
 
 export const userLogin = async (email, password) => {
   let errors = validateLogin(email, password);
@@ -11,7 +15,7 @@ export const userLogin = async (email, password) => {
     if (loginReturn.id) {
       const { id, name, email, token } = loginReturn;
 
-      saveUserAccess(id, token);
+      saveUserAccess(id, token, name);
       return { id, name, email, token };
     } else errors = loginReturn;
   }
@@ -27,7 +31,7 @@ export const userRegister = async (name, email, password, repeatPassword) => {
     if (registerReturn.id) {
       const { id, name, email, token } = registerReturn;
 
-      saveUserAccess(id, token);
+      saveUserAccess(id, token, name);
       return { id, name, email, token };
     }
     else errors = registerReturn;
@@ -40,6 +44,26 @@ export const userAccess = async () => {
   const idAndToken = localStorage.getItem('userAccess')?.split(' ');
 
   return idAndToken
-    ? mongoDB.userAccess(idAndToken[0], idAndToken[1])
+    ? await mongoDB.userAccess(idAndToken[0], idAndToken[1])
     : false;
+};
+
+export const loadExpenses = async () => {
+  const [id, token] = getIdAndToken();
+  return await mongoDB.loadExpenses(id, token);
+};
+
+export const addExpense = async (fullDate, nexExpense) => {
+  const [id, token] = getIdAndToken();
+  return await mongoDB.addExpense(id, token, fullDate, nexExpense);
+};
+
+export const updateExpense = async (fullDate, newExpense, index) => {
+  const [id, token] = getIdAndToken();
+  return await mongoDB.updateExpense(id, token, fullDate, newExpense, index);
+};
+
+export const deleteExpense = async (fullDate, index) => {
+  const [id, token] = getIdAndToken();
+  return await mongoDB.deleteExpense(id, token, fullDate, index);
 };

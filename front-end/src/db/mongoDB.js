@@ -19,9 +19,11 @@ const mongoDB = {
 
       const jsonResponse = await res.json();
       return jsonResponse;
-
     } catch (error) {
-      return { message: 'Erro no servidor. Tente novamente mais tarde.', error };
+      return {
+        message: 'Erro no servidor. Tente novamente mais tarde.',
+        error,
+      };
     }
   },
   userRegister: async (name, email, password, repeatPassword) => {
@@ -38,17 +40,84 @@ const mongoDB = {
 
       const jsonResponse = await res.json();
       return jsonResponse;
-
     } catch (error) {
       return { message: 'Falha no cadastro do usuário', error };
     }
   },
   userAccess: async (id, token) => {
     try {
-      const res = await fetch(
-        `${host}/users/${id}`, { method: 'GET', headers: { Authorization: `Bearer ${token}` } },
-      );
-      const jsonResponse = res.json();
+      const res = await fetch(`${host}/users/${id}`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const jsonResponse = await res.json();
+
+      return jsonResponse;
+    } catch (error) {
+      return false;
+    }
+  },
+  loadExpenses: async (id, token) => {
+    try {
+      const res = await fetch(`${host}/user/expenses/${id}`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const jsonResponse = await res.json();
+
+      return jsonResponse;
+    } catch (error) {
+      return false;
+    }
+  },
+  addExpense: async (id, token, fullDate, newExpense) => {
+    const body = { fullDate, newExpense };
+    try {
+      const res = await fetch(`${host}/user/expenses/${id}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+      const jsonResponse = await res.json();
+
+      return jsonResponse;
+    } catch(error) {
+      return false;
+    }
+  },
+  updateExpense: async (id, token, fullDate, newExpense, index) => {
+    const body = { fullDate, newExpense, index };
+    try {
+      const res = await fetch(`${host}/user/expenses/${id}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+      const jsonResponse = await res.json();
+
+      return jsonResponse;
+    } catch(error) {
+      return false;
+    }
+  },
+  deleteExpense: async (id, token, fullDate, index = null) => {
+    const body = { fullDate, index };
+    try {
+      const res = await fetch(`${host}/user/expenses/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+      const jsonResponse = await res.json();
 
       return jsonResponse;
     } catch(error) {

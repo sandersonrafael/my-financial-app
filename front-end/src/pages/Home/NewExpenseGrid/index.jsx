@@ -3,15 +3,10 @@ import PropTypes from 'prop-types';
 
 import { Container } from './styles';
 import { PrimaryButton, SecondaryButton } from '../../../components/Buttons';
-import { getDailyReportStorage, setDailyReportStorage } from '../../../db/localStorage';
+import { addExpense, updateExpense } from '../../../db/dataProcess';
+// import { getDailyReportStorage, setDailyReportStorage } from '../../../db/localStorage';
 
-export default function NewExpenseGrid({
-  setVisibility,
-  setUserExpenses,
-  edit,
-  editIndex,
-  date,
-}) {
+export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, editIndex, date }) {
   const [title, setTitle] = useState(edit?.title ?? '');
   const [category, setCategory] = useState(edit?.category ?? '');
   const [value, setValue] = useState(edit?.value ?? '');
@@ -28,16 +23,19 @@ export default function NewExpenseGrid({
   console.log('Fazer avisos para quando o usuário digitar algum valor incorreto ou em branco');
   console.log('Estilizar melhor o newExpenseGrid');
 
-  const handleAddExpense = () => {
-    setDailyReportStorage(date, { title, category, value, expense }, editIndex);
-    setUserExpenses(getDailyReportStorage(date));
+  const handleAddExpense = async () => {
+    const expenseData = [date, { title, category, value, expense }, editIndex];
+    const { fullReport } = edit
+      ? await updateExpense(...expenseData)
+      : await addExpense(...expenseData);
+
+    setUserExpenses(fullReport?.[date.year]?.[date.month]?.[date.date] || []);
+    // setDailyReportStorage(date, { title, category, value, expense }, editIndex);
+    // setUserExpenses(getDailyReportStorage(date));
     clearStates();
   };
 
-  const handleCancel = () => {
-    setVisibility(false);
-    clearStates();
-  };
+  const handleCancel = () => clearStates();
 
   return (
     <Container>

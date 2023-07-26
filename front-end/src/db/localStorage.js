@@ -1,4 +1,4 @@
-const getFullReportStorage = () => {
+export const getFullReportStorage = () => {
   const fullReport = localStorage.getItem('userExpenses');
   let fullReportObj;
   if (fullReport) {

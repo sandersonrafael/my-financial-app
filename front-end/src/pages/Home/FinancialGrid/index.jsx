@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 
 import { Container, NoExpenses } from './styles';
 import NewExpenseGrid from '../NewExpenseGrid';
-import { deleteDailyReportStorage, getDailyReportStorage } from '../../../db/localStorage';
+// import { deleteDailyReportStorage, getDailyReportStorage } from '../../../db/localStorage';
+import { deleteExpense } from '../../../db/dataProcess';
 
 export default function FinancialGrid({ userExpenses, setUserExpenses, date }) {
   const [total, setTotal] = useState(0);
@@ -24,10 +25,12 @@ export default function FinancialGrid({ userExpenses, setUserExpenses, date }) {
     setEditVisibility(true);
   };
 
-  const handleDelete = (index) => {
+  const handleDelete = async (index) => {
     index = typeof index === 'number' ? index : null;
-    deleteDailyReportStorage(date, index);
-    setUserExpenses(getDailyReportStorage(date));
+    const { fullReport } = await deleteExpense(date, index);
+    setUserExpenses(fullReport?.[date.year]?.[date.month]?.[date.date] || []);
+    // deleteDailyReportStorage(date, index);
+    // setUserExpenses(getDailyReportStorage(date));
   };
 
   return userExpenses.length === 0 ? (
