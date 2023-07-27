@@ -2,8 +2,9 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Container, Main, MainHeader, Input, P } from './styles';
-import { AskCamp, Error, Spinner } from './styles';
+import { AskCamp, Spinner } from './styles';
 import { PrimaryButton, SecondaryButton } from '../../components/Buttons';
+import Error from '../../components/Error';
 import { userLogin, userRegister } from '../../db/dataProcess';
 import { ImSpinner10 } from 'react-icons/im';
 

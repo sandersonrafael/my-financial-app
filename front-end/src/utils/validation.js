@@ -70,3 +70,19 @@ export const validateRegister = (name, email, password, repeatPassword) => {
     errors.repeatPasswordMsgs.length !== 0
   ) return errors;
 };
+
+export const validateNewExpense = ({ title, category, value, expense }) => {
+  const errors = ['', '', '', ''];
+
+  if (!title) errors[0] = 'Título não pode estar em branco';
+  else if (typeof title !== 'string') errors[0] = 'Necessário informar um Título válido';
+
+  if (!category) errors[1] = 'Categoria não pode estar em branco';
+  else if (typeof category !== 'string') errors[1] = 'Necessário informar uma Categoria válida';
+
+  if (!value) errors[2] = 'Valor não pode ser zero ou vazio';
+  else if (typeof value !== 'number') errors[2] = 'Necessário informar um Valor válido';
+
+  if (typeof expense !== 'boolean') errors[3] = 'Necessário informar se é despesa ou receita';
+  return errors;
+};

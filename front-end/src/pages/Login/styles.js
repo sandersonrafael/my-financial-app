@@ -83,12 +83,6 @@ export const AskCamp = styled.div`
   }
 `;
 
-export const Error = styled.p`
-  color: red;
-  font-size: 14px;
-  text-align: center;
-`;
-
 export const Spinner = styled.div`
     width: 90px;
     height: 90px;
