@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Login from './pages/Login';
 import Home from './pages/Home';
-import { BrowserRouter } from 'react-router-dom';
 import { userAccess } from './db/dataProcess';
 
 export default function App() {
@@ -21,8 +20,6 @@ export default function App() {
   return !(loggedIn || guest) ? (
     <Login setLoggedIn={setLoggedIn} setGuest={setGuest} loading={loading} />
   ) : (
-    <BrowserRouter>
-      <Home loggedIn={loggedIn} />
-    </BrowserRouter>
+    <Home loggedIn={loggedIn} />
   );
 }

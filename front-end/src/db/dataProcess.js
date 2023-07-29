@@ -48,6 +48,11 @@ export const userAccess = async () => {
     : false;
 };
 
+export const attUserData = async ( name, email, password, newPassword, repeatNewPassword) => {
+  const errors = validateRegister(name, email, newPassword, repeatNewPassword);
+  console.log(errors);
+};
+
 export const loadExpenses = async () => {
   const [id, token] = getIdAndToken();
   return await mongoDB.loadExpenses(id, token);
