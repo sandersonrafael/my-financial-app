@@ -1,4 +1,4 @@
-import { validateLogin, validateRegister } from '../utils/validation';
+import { validateLogin, validateRegister, validateAttUserData } from '../utils/validation';
 import mongoDB from './mongoDB';
 
 const getIdAndToken = () => localStorage.getItem('userAccess')?.split(' ') || ['', ''];
@@ -48,9 +48,30 @@ export const userAccess = async () => {
     : false;
 };
 
-export const attUserData = async ( name, email, password, newPassword, repeatNewPassword) => {
-  const errors = validateRegister(name, email, newPassword, repeatNewPassword);
-  console.log(errors);
+export const attUserData = async (name, email, password, newPassword, repeatNewPassword) => {
+  const errors = validateAttUserData(name, email, password, newPassword, repeatNewPassword);
+
+  if (newPassword) {
+    delete errors.emailMsgs && delete errors.nameMsgs;
+    for (let key in errors) if (errors[key].length >= 1) return errors; // eslint-disable-line
+
+    return await console.log('Script que manda para o mongodb');
+  } else {
+    delete errors.newPasswordMsgs && delete errors.repeatNewPasswordMsgs;
+    for (let key in errors) if (errors[key].length >= 1) return errors; // eslint-disable-line
+
+    return await console.log('Script que manda para o mongodb');
+  }
+
+  // if (password === newPassword) {
+  //   'fazer esse texo' +
+  //   'para dizer que' +
+  //   'o usuário não pode trocar a senha' +
+  //   'pela mesma senha' +
+  //   'que é necessário' +
+  //   'alterar a senha';
+  // }
+  // return errors;
 };
 
 export const loadExpenses = async () => {

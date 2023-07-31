@@ -17,7 +17,7 @@ const validateUserLogin = async (req, res, next) => {
 
     //email validate
     if (email.length === 0) errors.emailMsgs.push('E-mail não pode estar vazio');
-    if (!validator.isEmail(email)) errors.emailMsgs.push('E-mail inválido');
+    else if (!validator.isEmail(email)) errors.emailMsgs.push('E-mail inválido');
 
     //password validate
     if (password.length < 4 || password.length > 16)

@@ -17,16 +17,38 @@ export default function UserData() {
   const [editingUserData, setEditingUserData] = useState(false);
   const [editingPassword, setEditingPassword] = useState(false);
   const [name, setName] = useState(getName());
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('sandersonrafael-35@hotmail.com');
   console.log(
     'Fazer o context para obter o nome de usuário, id e e-mail\n' +
     'Tirar os completes manuais do componente UserData',
   );
-  const [password, setPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [repeatNewPassword, setRepeatNewPassword] = useState('');
+  const [password, setPassword] = useState('/* NovaSenha123* */');
+  const [newPassword, setNewPassword] = useState('/* NovaSenha123* */');
+  const [repeatNewPassword, setRepeatNewPassword] = useState('/* NovaSenha123* */');
+  const [alerts, setAlerts] = useState({});
+  console.log('----------->', alerts);
 
   const handlePrimaryButton = async () => {
+    if (!editingUserData && !editingPassword) setEditingUserData(true);
+    if (editingUserData || editingPassword) {
+      console.log('Mandar tudo no new Alerts, mas fazer' +
+      'um setAlerts dependendo do editingUserData ou editinPassword');
+      const newAlerts = await attUserData(name, email, password, newPassword, repeatNewPassword);
+
+      if (newAlerts) {
+        const { nameMsgs, emailMsgs, passwordMsgs, repeatPasswordMsgs } = newAlerts;
+        setAlerts(
+          editingUserData ? { nameMsgs, emailMsgs } : { passwordMsgs, repeatPasswordMsgs },
+        );
+      }
+      console.log('Continuar aqui e atualizar todos estados para os novos e senhas vazias...');
+
+      if (!alerts) {
+        setEditingUserData(false);
+        setEditingPassword(false);
+      }
+    }
+
     attUserData(name, email, password, newPassword, repeatNewPassword);
   };
 
@@ -35,9 +57,10 @@ export default function UserData() {
       setEditingUserData(false);
       setEditingPassword(false);
     }
-    if (!editingUserData && !editingPassword) {
-      setEditingPassword(true);
-    }
+    if (!editingUserData && !editingPassword) setEditingPassword(true);
+    setAlerts({});
+
+    console.log('Fazer secondary button retornar as infos aos estados iniciais, carregados');
   };
 
   return (
@@ -54,7 +77,7 @@ export default function UserData() {
               onChange={(e) => setName(e.target.value)}
               placeholder="Nome Completo"
             />
-            <Error>ok</Error>
+            <Error>{alerts?.nameMsgs}</Error>
           </>}
           {editingPassword || <>
             <input

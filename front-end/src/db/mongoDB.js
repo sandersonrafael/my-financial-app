@@ -1,7 +1,8 @@
 const host = import.meta.env.VITE_API_HOST;
 console.log(
-  'Ver a possbilidade de sincronizar sempre o ' +
-  'localStorage e o DB ou remover completamente o localStorage',
+  'Usar o localStorage para otimizar a aplicação. Sempre verifica se tem o localStorage ' +
+  '-> verifica se tem o localStorage e se tiver, carrega do storage, se não, do DB. Sempre que ' +
+  'salva no DB, salva no storage também. Sempre que carrega do DB, salva no storage também... etc',
 );
 
 const mongoDB = {
