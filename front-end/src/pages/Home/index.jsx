@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
+import Page404 from './Page404';
 import DailyReport from './DailyReport';
 import UserData from './UserData';
+import Reports from './Reports';
 import { Body, BodyMain, BodyTop, Container, Footer, Header } from './styles';
 
 const logo = 'https://images2.imgbox.com/50/4c/tVvk0H0O_o.png';
@@ -38,10 +40,9 @@ export default function Home() {
           <BodyMain>
             <Routes>
               <Route path="/" element={<DailyReport />} />
+              <Route path="/reports" element={<Reports />} />
               <Route path="/user" element={<UserData />} />
-              {console.log(
-                'Fazer rota -> página 404 - A página que você procura não existe',
-              )}
+              <Route path="*" element={<Page404 />} />
             </Routes>
           </BodyMain>
 

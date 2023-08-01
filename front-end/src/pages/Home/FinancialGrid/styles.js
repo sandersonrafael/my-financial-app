@@ -36,7 +36,7 @@ export const Container = styled.div`
   div>h3,
   header>h3 {
     font-weight: 600;
-    font-size: 22px;
+    font-size: 20px;
     padding: 0 5px 15px;
   }
 
