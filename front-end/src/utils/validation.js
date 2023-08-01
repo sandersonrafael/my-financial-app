@@ -31,9 +31,9 @@ const validatePassword = (password = '') => {
   else if (password.indexOf(' ') !== -1) passwordMsgs.push('Senha não pode conter espaços');
   else if (
     !password.match(/[a-z]/g) ||
-  !password.match(/[A-Z]/g) ||
-  !password.match(/[0-9]/g) ||
-  !password.match(/[\W]/g)
+    !password.match(/[A-Z]/g) ||
+    !password.match(/[0-9]/g) ||
+    !password.match(/[\W]/g)
   ) passwordMsgs.push(
     'Senha deve conter letras maiúsculas, minúsculas, números e símbolos',
   );
@@ -69,12 +69,7 @@ export const validateRegister = (name, email, password, repeatPassword) => {
   errors.passwordMsgs = validatePassword(password);
   errors.repeatPasswordMsgs = validateRepeatPassword(password, repeatPassword);
 
-  if (
-    errors.nameMsgs.length !== 0 ||
-    errors.emailMsgs.length !== 0 ||
-    errors.passwordMsgs.length !== 0 ||
-    errors.repeatPasswordMsgs.length !== 0
-  ) return errors;
+  return errors;
 };
 
 export const validateAttUserData = (name, email, password, newPassword, repeatNewPassword) => {
@@ -86,7 +81,13 @@ export const validateAttUserData = (name, email, password, newPassword, repeatNe
   errors.newPasswordMsgs = validatePassword(newPassword);
   errors.repeatNewPasswordMsgs = validateRepeatPassword(newPassword, repeatNewPassword);
 
-  return errors;
+  if (
+    errors.nameMsgs.length !== 0 ||
+    errors.emailMsgs.length !== 0 ||
+    errors.passwordMsgs.length !== 0 ||
+    errors.newPasswordMsgs.length !== 0 ||
+    errors.repeatNewPasswordMsgs.length !== 0
+  ) return errors;
 };
 
 export const validateNewExpense = ({ title, category, value, expense }) => {

@@ -18,6 +18,8 @@ const validateAttUserInfos = async (req, res, next) => {
     });
 
     const { password } = req.body;
+    if (!password) res.status(400).json({ message: 'Necessário informar um password' });
+
     const user = await User.findById(req.params.id);
 
     const passwordMatches = await bcrypt.compare(password, user.password);
@@ -28,7 +30,11 @@ const validateAttUserInfos = async (req, res, next) => {
       delete errors.newPasswordMsgs && delete errors.repeatNewPasswordMsgs;
 
       if (!name || !email) return res.status(400).json({
-        message: 'Necessário informar um name e um email.',
+        message: 'Necessário informar um nome e um E-mail.',
+      });
+
+      if (name === user.name && email === user.email) return res.status(400).json({
+        message: 'Nome e e-mail informados são iguais aos anteriores.',
       });
 
       if (name.length === 0) errors.nameMsgs.push('Nome não pode estar vazio');
@@ -54,7 +60,11 @@ const validateAttUserInfos = async (req, res, next) => {
       delete errors.nameMsgs && delete errors.emailMsgs;
 
       if (!newPassword || !repeatNewPassword) return res.status(400).json({
-        message: 'Necessário informar um newPassword e um repeatNewPassword.',
+        message: 'Necessário informar nova senha e confirmação da nova senha válidas.',
+      });
+
+      if (password === newPassword) return res.status(400).json({
+        message: 'Nova senha não pode ser igual à senha atual.',
       });
 
       if (newPassword.length < 4 || newPassword?.length > 16)

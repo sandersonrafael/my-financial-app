@@ -32,7 +32,7 @@ export default function Home() {
 
         <Body>
           <BodyTop>
-            <h1>Boas vindas, {localStorage.getItem('userAccess')?.split(' ')[2]}!</h1>
+            <h1>Boas vindas, {localStorage.getItem('userAccess')?.split(' ')[3]}!</h1>
           </BodyTop>
 
           <BodyMain>

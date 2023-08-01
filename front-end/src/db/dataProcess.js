@@ -3,8 +3,8 @@ import mongoDB from './mongoDB';
 
 const getIdAndToken = () => localStorage.getItem('userAccess')?.split(' ') || ['', ''];
 
-const saveUserAccess = (id, token, name) => localStorage.setItem(
-  'userAccess', `${id} ${token} ${name}`,
+const saveUserAccess = (id, token, email, name) => localStorage.setItem(
+  'userAccess', `${id} ${token} ${email} ${name}`,
 );
 
 export const userLogin = async (email, password) => {
@@ -15,7 +15,7 @@ export const userLogin = async (email, password) => {
     if (loginReturn.id) {
       const { id, name, email, token } = loginReturn;
 
-      saveUserAccess(id, token, name);
+      saveUserAccess(id, token, email, name);
       return { id, name, email, token };
     } else errors = loginReturn;
   }
@@ -31,7 +31,7 @@ export const userRegister = async (name, email, password, repeatPassword) => {
     if (registerReturn.id) {
       const { id, name, email, token } = registerReturn;
 
-      saveUserAccess(id, token, name);
+      saveUserAccess(id, token, email, name);
       return { id, name, email, token };
     }
     else errors = registerReturn;
@@ -41,37 +41,30 @@ export const userRegister = async (name, email, password, repeatPassword) => {
 };
 
 export const userAccess = async () => {
-  const idAndToken = localStorage.getItem('userAccess')?.split(' ');
+  const [id, token] = getIdAndToken();
 
-  return idAndToken
-    ? await mongoDB.userAccess(idAndToken[0], idAndToken[1])
+  return id
+    ? await mongoDB.userAccess(id, token)
     : false;
 };
 
 export const attUserData = async (name, email, password, newPassword, repeatNewPassword) => {
+  const [ id, token ] = getIdAndToken();
   const errors = validateAttUserData(name, email, password, newPassword, repeatNewPassword);
 
-  if (newPassword) {
-    delete errors.emailMsgs && delete errors.nameMsgs;
-    for (let key in errors) if (errors[key].length >= 1) return errors; // eslint-disable-line
+  if (newPassword) delete errors.emailMsgs && delete errors.nameMsgs ;
+  else delete errors.newPasswordMsgs && delete errors.repeatNewPasswordMsgs;
 
-    return await console.log('Script que manda para o mongodb');
-  } else {
-    delete errors.newPasswordMsgs && delete errors.repeatNewPasswordMsgs;
-    for (let key in errors) if (errors[key].length >= 1) return errors; // eslint-disable-line
+  for (let key in errors) if (errors[key].length > 0) return errors // eslint-disable-line
 
-    return await console.log('Script que manda para o mongodb');
-  }
+  delete errors.passwordMsgs;
 
-  // if (password === newPassword) {
-  //   'fazer esse texo' +
-  //   'para dizer que' +
-  //   'o usuário não pode trocar a senha' +
-  //   'pela mesma senha' +
-  //   'que é necessário' +
-  //   'alterar a senha';
-  // }
-  // return errors;
+  const attUserDataReturn = await mongoDB.attUserData(
+    id, token, name, email, password, newPassword, repeatNewPassword,
+  );
+  saveUserAccess(id, token, email, name);
+
+  return attUserDataReturn;
 };
 
 export const loadExpenses = async () => {

@@ -3,64 +3,54 @@ import { Form } from './styles';
 import { PrimaryButton, SecondaryButton } from '../../../components/Buttons';
 import Error from '../../../components/Error';
 import { attUserData } from '../../../db/dataProcess';
+import Success from '../../../components/Success';
 
-const getName = () => {
-  const userAccess = localStorage.getItem('userAccess')?.split(' ');
-  if (userAccess) {
-    userAccess.splice(0, 2);
-    return userAccess.join(' ');
-  }
-  return '';
-};
+const getName = () => localStorage.getItem('userAccess')?.split(' ')?.splice(3)?.join(' ') || '';
+const getEmail = () => localStorage.getItem('userAccess')?.split(' ')?.[2] || '';
 
 export default function UserData() {
   const [editingUserData, setEditingUserData] = useState(false);
   const [editingPassword, setEditingPassword] = useState(false);
   const [name, setName] = useState(getName());
-  const [email, setEmail] = useState('sandersonrafael-35@hotmail.com');
-  console.log(
-    'Fazer o context para obter o nome de usuário, id e e-mail\n' +
-    'Tirar os completes manuais do componente UserData',
-  );
-  const [password, setPassword] = useState('/* NovaSenha123* */');
-  const [newPassword, setNewPassword] = useState('/* NovaSenha123* */');
-  const [repeatNewPassword, setRepeatNewPassword] = useState('/* NovaSenha123* */');
+  const [email, setEmail] = useState(getEmail());
+  const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [repeatNewPassword, setRepeatNewPassword] = useState('');
   const [alerts, setAlerts] = useState({});
-  console.log('----------->', alerts);
+
+  const resetStates = () => {
+    setName(getName());
+    setEmail(getEmail());
+    setPassword('');
+    setNewPassword('');
+    setRepeatNewPassword('');
+  };
 
   const handlePrimaryButton = async () => {
-    if (!editingUserData && !editingPassword) setEditingUserData(true);
+    setAlerts({});
+    if (!editingUserData && !editingPassword) return setEditingUserData(true);
+
     if (editingUserData || editingPassword) {
-      console.log('Mandar tudo no new Alerts, mas fazer' +
-      'um setAlerts dependendo do editingUserData ou editinPassword');
-      const newAlerts = await attUserData(name, email, password, newPassword, repeatNewPassword);
+      const apiResponse = await attUserData(name, email, password, newPassword, repeatNewPassword);
+      setAlerts(apiResponse);
 
-      if (newAlerts) {
-        const { nameMsgs, emailMsgs, passwordMsgs, repeatPasswordMsgs } = newAlerts;
-        setAlerts(
-          editingUserData ? { nameMsgs, emailMsgs } : { passwordMsgs, repeatPasswordMsgs },
-        );
-      }
-      console.log('Continuar aqui e atualizar todos estados para os novos e senhas vazias...');
-
-      if (!alerts) {
+      if (apiResponse.success) {
         setEditingUserData(false);
         setEditingPassword(false);
+        resetStates();
       }
     }
-
-    attUserData(name, email, password, newPassword, repeatNewPassword);
   };
 
   const handleSecondaryButton = () => {
+    resetStates();
+    setAlerts({});
+
     if (editingUserData || editingPassword) {
       setEditingUserData(false);
       setEditingPassword(false);
     }
     if (!editingUserData && !editingPassword) setEditingPassword(true);
-    setAlerts({});
-
-    console.log('Fazer secondary button retornar as infos aos estados iniciais, carregados');
   };
 
   return (
@@ -83,22 +73,44 @@ export default function UserData() {
             <input
               disabled={!editingUserData}
               type="text"
-              value=""
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="E-mail de Usuário"
             />
+            <Error>{alerts?.emailMsgs}</Error>
           </>}
+
           <input
             disabled={!editingUserData && !editingPassword}
             type="password"
             placeholder={
-              editingUserData ? 'Digite sua senha para confirmar' :
+              editingUserData ? 'Digite sua senha para validar' :
                 editingPassword ? 'Digite sua Senha Atual' : '••••••••••'
             }
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
+          <Error>{alerts?.passwordMsgs}</Error>
+
           {editingPassword && <>
-            <input type="password" placeholder="Digite sua Nova Senha" />
-            <input type="password" placeholder="Confirme sua Nova Senha" />
+            <input
+              type="password"
+              placeholder="Digite sua Nova Senha"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <Error>{alerts?.newPasswordMsgs}</Error>
+
+            <input
+              type="password"
+              placeholder="Confirme sua Nova Senha"
+              value={repeatNewPassword}
+              onChange={(e) => setRepeatNewPassword(e.target.value)}
+            />
+            <Error>{alerts?.repeatNewPasswordMsgs}</Error>
           </>}
+          <Error>{alerts?.message}</Error>
+          <Success>{alerts?.success}</Success>
           <div>
             <PrimaryButton onClick={handlePrimaryButton}>
               {editingUserData || editingPassword ? 'Salvar' : 'Editar Dados'}

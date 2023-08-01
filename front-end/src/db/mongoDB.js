@@ -1,9 +1,4 @@
 const host = import.meta.env.VITE_API_HOST;
-console.log(
-  'Usar o localStorage para otimizar a aplicação. Sempre verifica se tem o localStorage ' +
-  '-> verifica se tem o localStorage e se tiver, carrega do storage, se não, do DB. Sempre que ' +
-  'salva no DB, salva no storage também. Sempre que carrega do DB, salva no storage também... etc',
-);
 
 const mongoDB = {
   userLogin: async (email, password) => {
@@ -46,6 +41,13 @@ const mongoDB = {
     }
   },
   userAccess: async (id, token) => {
+    console.log(
+      'Usar o localStorage para otimizar a aplicação. Sempre verifica se tem o localStorage ' +
+      '-> verifica se tem o localStorage e se tiver, carrega do storage, se não, do DB. ' +
+      'Sempre que salva no DB, salva no storage também. Sempre que carrega do DB,' +
+      ' salva no storage também... etc',
+    );
+
     try {
       const res = await fetch(`${host}/users/${id}`, {
         method: 'GET',
@@ -56,6 +58,27 @@ const mongoDB = {
       return jsonResponse;
     } catch (error) {
       return false;
+    }
+  },
+  attUserData: async (id, token, name, email, password, newPassword, repeatNewPassword) => {
+    const body = newPassword && repeatNewPassword
+      ? { changePassword: { newPassword, repeatNewPassword }, password }
+      : { changeInfos: { name, email }, password };
+
+    try {
+      const res = await fetch(`${host}/users/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
+      const jsonResponse = await res.json();
+
+      return jsonResponse;
+    } catch(error) {
+      return { message: 'Falha na conexão com a base de dados', error };
     }
   },
   loadExpenses: async (id, token) => {
