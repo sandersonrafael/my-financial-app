@@ -31,7 +31,9 @@ export default function UserData() {
     if (!editingUserData && !editingPassword) return setEditingUserData(true);
 
     if (editingUserData || editingPassword) {
-      const apiResponse = await attUserData(name, email, password, newPassword, repeatNewPassword);
+      const apiResponse =
+        await attUserData(name, email, password, newPassword, repeatNewPassword, editingPassword);
+
       setAlerts(apiResponse);
 
       if (apiResponse.success) {
@@ -65,7 +67,7 @@ export default function UserData() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Nome Completo"
+              placeholder="Digite seu Nome Completo"
             />
             <Error>{alerts?.nameMsgs}</Error>
           </>}
@@ -75,7 +77,7 @@ export default function UserData() {
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="E-mail de Usuário"
+              placeholder="Digite seu Novo E-mail"
             />
             <Error>{alerts?.emailMsgs}</Error>
           </>}
@@ -84,7 +86,7 @@ export default function UserData() {
             disabled={!editingUserData && !editingPassword}
             type="password"
             placeholder={
-              editingUserData ? 'Digite sua senha para validar' :
+              editingUserData ? 'Digite sua Senha Para Confirmar' :
                 editingPassword ? 'Digite sua Senha Atual' : '••••••••••'
             }
             value={password}

@@ -48,11 +48,18 @@ export const userAccess = async () => {
     : false;
 };
 
-export const attUserData = async (name, email, password, newPassword, repeatNewPassword) => {
+export const attUserData = async (
+  name,
+  email,
+  password,
+  newPassword,
+  repeatNewPassword,
+  editingPassword,
+) => {
   const [ id, token ] = getIdAndToken();
-  const errors = validateAttUserData(name, email, password, newPassword, repeatNewPassword);
+  const errors = validateAttUserData(name, email, password, newPassword, repeatNewPassword) || {};
 
-  if (newPassword) delete errors.emailMsgs && delete errors.nameMsgs ;
+  if (editingPassword) delete errors.emailMsgs && delete errors.nameMsgs ;
   else delete errors.newPasswordMsgs && delete errors.repeatNewPasswordMsgs;
 
   for (let key in errors) if (errors[key].length > 0) return errors // eslint-disable-line
