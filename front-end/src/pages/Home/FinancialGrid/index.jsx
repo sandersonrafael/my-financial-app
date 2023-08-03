@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { BiSolidEdit, BiSolidTrash } from 'react-icons/bi';
 import PropTypes from 'prop-types';
 
-import { Container, NoExpenses } from './styles';
 import NewExpenseGrid from '../NewExpenseGrid';
 // import { deleteDailyReportStorage, getDailyReportStorage } from '../../../db/localStorage';
 import { deleteExpense } from '../../../db/dataProcess';
 import formatCurrency from '../../../utils/formatCurrency';
+import { Container, NoExpenses } from './styles';
 
 export default function FinancialGrid({ userExpenses, setUserExpenses, date }) {
   const [total, setTotal] = useState(0);

@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
-import { ReportGrid } from './styles';
 import { loadExpenses } from '../../../db/dataProcess';
 import getPeriodReport from '../../../utils/getPeriodReport';
 import formatCurrency from '../../../utils/formatCurrency';
 
+import { NoExpenses, ReportGrid, EmphasisGrid, Select } from './styles';
+
+const periodPTBR = { daily: 'diário', monthly: 'mensal', yearly: 'anual' };
+
 export default function Reports() {
   const [period, setPeriod] = useState('yearly');
-  const [fullReport, setFullReport] = useState([]);
+  const [fullReport, setFullReport] = useState({});
   const [mostRecent, setMostRecent] = useState(true);
 
   useEffect(() => {
@@ -25,38 +28,66 @@ export default function Reports() {
       return (
         <ReportGrid key={key}>
           <span>{period}</span>
-          <span>{formatCurrency(entries)}</span>
-          <span>{formatCurrency(exits)}</span>
-          <span>{formatCurrency(total)}</span>
+          <span style={{ color: entries > 0 ? 'green' : 'black' }}>{formatCurrency(entries)}</span>
+          <span style={{ color: exits > 0 ? 'red' : 'black' }}>{formatCurrency(exits)}</span>
+          <span
+            style={{ color: total > 0 ? 'green' : total < 0 ? 'red' : 'black' }}
+          >
+            {formatCurrency(total)}
+          </span>
           <span>{'edit delete'}</span>
         </ReportGrid>
-      );});
+      );
+    });
   };
 
   return (
     <>
       <h2>Relatório por Período</h2>
       <section>
-        <select value={period} onChange={(e) => setPeriod(e.target.value)}>
+        <Select value={period} onChange={(e) => setPeriod(e.target.value)}>
           <option value="yearly">Anual</option>
           <option value="monthly">Mensal</option>
           <option value="daily">Diário</option>
-        </select>
+        </Select>
 
-        <select value={mostRecent} onChange={(e) => setMostRecent(e.target.value === 'true')}>
+        <Select value={mostRecent} onChange={(e) => setMostRecent(e.target.value === 'true')}>
           <option value={true}>Mais Recente</option>
           <option value={false}>Mais Antigo</option>
-        </select>
+        </Select>
       </section>
-      <ReportGrid> {console.log('Fazer um title grid em vez de report grid')}
-        <h3>Período</h3>
-        <h3>Entradas</h3>
-        <h3>Saídas</h3>
-        <h3>Total</h3>
-        <h3>Ações</h3>
-      </ReportGrid>
-      {mostRecent ? writeReports()?.reverse() : writeReports()}
-      <p>ok</p>
+      {Object.keys(fullReport)?.length ? (
+        <>
+          <EmphasisGrid>
+            <h3>Período</h3>
+            <h3>Entradas</h3>
+            <h3>Saídas</h3>
+            <h3>Total</h3>
+            <h3>Ações</h3>
+          </EmphasisGrid>
+          {mostRecent ? writeReports()?.reverse() : writeReports()}
+          <section></section>
+          {fullReport?.[period+'Totals']?.map((result, key) => {
+            const { period, entries, exits, total } = result;
+            return <EmphasisGrid key={key}>
+              <h3>{period}</h3>
+              <h3 style={{ color: entries > 0 ? 'green' : 'black' }}>{formatCurrency(entries)}</h3>
+              <h3 style={{ color: exits > 0 ? 'red' : 'black' }}>{formatCurrency(exits)}</h3>
+              <h3
+                style={{ color: total > 0 ? 'green' : total < 0 ? 'red' : 'black' }}
+              >
+                {formatCurrency(total)}
+              </h3>
+              <h3></h3>
+            </EmphasisGrid>;
+          })}
+        </>
+      ) : (
+        <NoExpenses>
+          <h3>Nenhum dado para exibir.</h3>
+          <h3>Adicione receitas ou despesas para atualizar o relatório {periodPTBR[period]}.</h3>
+        </NoExpenses>
+      )}
     </>
   );
 }

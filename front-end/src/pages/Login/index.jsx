@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Container, Main, MainHeader, Input, P } from './styles';
+import { Container, Main, MainHeader, Input, P, Spacing } from './styles';
 import { AskCamp, Spinner } from './styles';
 import { PrimaryButton, SecondaryButton } from '../../components/Buttons';
 import Error from '../../components/Error';
@@ -125,11 +125,11 @@ export default function Login({ setLoggedIn, setGuest, loading }) {
             {registerFields ? 'Faça Login' : 'Registre-se'}
           </SecondaryButton>
 
-          {!registerFields && (
+          {!registerFields && <Spacing />/* (
             <P style={{ paddingBottom: 10 }}>
             Ou: <span onClick={() => setGuest(true)}>Entre sem uma conta</span>
             </P>
-          )}
+          ) */}
         </Main>
       )}
     </Container>

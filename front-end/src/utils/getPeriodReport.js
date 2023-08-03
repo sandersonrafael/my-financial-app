@@ -67,5 +67,42 @@ export default function getPeriodReport(report = {}) {
     } else yearlyReports.push({ ...newResult });
   }
 
-  return { daily: dailyReports, monthly: monthlyReports, yearly: yearlyReports };
+  const dailyTotals = [dailyReports.reduce(
+    (acc, obj) => {
+      acc.entries += Object.values(obj)[0].entries;
+      acc.exits += Object.values(obj)[0].exits;
+      acc.total += Object.values(obj)[0].total;
+      return acc;
+    },
+    { period: 'Total', entries: 0, exits: 0, total: 0 },
+  )];
+
+  const monthlyTotals = [monthlyReports.reduce(
+    (acc, obj) => {
+      acc.entries += Object.values(obj)[0].entries;
+      acc.exits += Object.values(obj)[0].exits;
+      acc.total += Object.values(obj)[0].total;
+      return acc;
+    },
+    { period: 'Total', entries: 0, exits: 0, total: 0 },
+  )];
+
+  const yearlyTotals = [yearlyReports.reduce(
+    (acc, obj) => {
+      acc.entries += Object.values(obj)[0].entries;
+      acc.exits += Object.values(obj)[0].exits;
+      acc.total += Object.values(obj)[0].total;
+      return acc;
+    },
+    { period: 'Total', entries: 0, exits: 0, total: 0 },
+  )];
+
+  return {
+    daily: dailyReports,
+    monthly: monthlyReports,
+    yearly: yearlyReports,
+    dailyTotals,
+    monthlyTotals,
+    yearlyTotals,
+  };
 }

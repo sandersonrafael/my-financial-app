@@ -83,6 +83,10 @@ export const AskCamp = styled.div`
   }
 `;
 
+export const Spacing = styled.p`
+  margin-bottom: 20px;
+`;
+
 export const Spinner = styled.div`
     width: 90px;
     height: 90px;
