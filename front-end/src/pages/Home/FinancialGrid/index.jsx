@@ -6,6 +6,7 @@ import { Container, NoExpenses } from './styles';
 import NewExpenseGrid from '../NewExpenseGrid';
 // import { deleteDailyReportStorage, getDailyReportStorage } from '../../../db/localStorage';
 import { deleteExpense } from '../../../db/dataProcess';
+import formatCurrency from '../../../utils/formatCurrency';
 
 export default function FinancialGrid({ userExpenses, setUserExpenses, date }) {
   const [total, setTotal] = useState(0);
@@ -53,10 +54,7 @@ export default function FinancialGrid({ userExpenses, setUserExpenses, date }) {
             <span>{category}</span>
             <span style={{ color: value !== 0 ? expense ? 'red': 'green' : '#555' }}>
               {expense && '-'}
-              {value.toLocaleString('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-              })}
+              {formatCurrency(value)}
             </span>
             <span>
               <div>
@@ -76,7 +74,7 @@ export default function FinancialGrid({ userExpenses, setUserExpenses, date }) {
           <h3>Total</h3>
           <h3>{total > 0 ? 'Lucro' : total === 0 ? 'Empate' : 'Despesa' }</h3>
           <h3 style={{ color: total > 0 ? 'green' : total === 0 ? '#333' : 'red' }}>
-            {total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+            {formatCurrency(total)}
           </h3>
           <h3>
             {userExpenses.length > 0 && <BiSolidTrash
