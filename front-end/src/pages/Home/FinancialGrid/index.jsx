@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { BiSolidEdit, BiSolidTrash } from 'react-icons/bi';
 import PropTypes from 'prop-types';
 
@@ -7,8 +7,11 @@ import NewExpenseGrid from '../NewExpenseGrid';
 import { deleteExpense } from '../../../db/dataProcess';
 import formatCurrency from '../../../utils/formatCurrency';
 import { Container, NoExpenses } from './styles';
+import DateContext from '../../../contexts/DateContext';
 
-export default function FinancialGrid({ userExpenses, setUserExpenses, date }) {
+export default function FinancialGrid({ userExpenses, setUserExpenses }) {
+  const { date } = useContext(DateContext);
+
   const [total, setTotal] = useState(0);
   const [editIndex, setEditIndex] = useState(null);
   const [editVisibility, setEditVisibility] = useState(false);
@@ -91,7 +94,6 @@ export default function FinancialGrid({ userExpenses, setUserExpenses, date }) {
           setUserExpenses={setUserExpenses}
           editIndex={editIndex}
           edit={edit}
-          date={date}
         />
       }
     </>
@@ -108,9 +110,4 @@ FinancialGrid.propTypes = {
     }),
   ).isRequired,
   setUserExpenses: PropTypes.func.isRequired,
-  date: PropTypes.shape({
-    year: PropTypes.number.isRequired,
-    month: PropTypes.number.isRequired,
-    date: PropTypes.number.isRequired,
-  }).isRequired,
 };

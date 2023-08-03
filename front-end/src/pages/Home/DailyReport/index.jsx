@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { BsFillArrowDownCircleFill, BsFillPlusCircleFill } from 'react-icons/bs';
 
 import { primaryColor } from '../../../colors/colors';
@@ -7,6 +7,7 @@ import { loadExpenses } from '../../../db/dataProcess';
 
 import FinancialGrid from '../FinancialGrid';
 import NewExpenseGrid from '../NewExpenseGrid';
+import DateContext from '../../../contexts/DateContext';
 
 const load = async (date) => {
   const { fullReport } = await loadExpenses();
@@ -16,12 +17,8 @@ const load = async (date) => {
 export default function DailyReport() {
   const [calendarVisibility, setCalendarVisibility] = useState(false);
   const [newExpenseVisibility, setNewExpenseVisibility] = useState(false);
-  const [date, setDate] = useState({
-    year: new Date().getFullYear(),
-    month: new Date().getMonth(),
-    date: new Date().getDate(),
-  });
   const [userExpenses, setUserExpenses] = useState([]);
+  const { date, setDate } = useContext(DateContext);
 
   useEffect(() => {
     const attList = async () => setUserExpenses(await load(date));
@@ -79,7 +76,6 @@ export default function DailyReport() {
           </button>
           {newExpenseVisibility && (
             <NewExpenseGrid
-              date={date}
               setVisibility={setNewExpenseVisibility}
               setUserExpenses={setUserExpenses}
             />
@@ -88,7 +84,6 @@ export default function DailyReport() {
       </section>
 
       <FinancialGrid
-        date={date}
         userExpenses={userExpenses}
         setUserExpenses={setUserExpenses}
       />

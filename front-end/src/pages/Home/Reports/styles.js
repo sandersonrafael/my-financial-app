@@ -30,6 +30,17 @@ export const ReportGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   text-align: center;
+
+  svg {
+    cursor: pointer;
+    font-size: 24px;
+    padding: 0;
+    margin: 0 5px;
+
+    &:hover {
+      opacity: .7;
+    }
+  }
 `;
 
 export const Select = styled.select`

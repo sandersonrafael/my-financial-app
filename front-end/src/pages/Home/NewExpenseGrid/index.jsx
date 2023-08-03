@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Container } from './styles';
@@ -6,9 +6,12 @@ import { PrimaryButton, SecondaryButton } from '../../../components/Buttons';
 import Error from '../../../components/Error';
 import { addExpense, updateExpense } from '../../../db/dataProcess';
 import { validateNewExpense } from '../../../utils/validation';
+import DateContext from '../../../contexts/DateContext';
 // import { getDailyReportStorage, setDailyReportStorage } from '../../../db/localStorage';
 
-export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, editIndex, date }) {
+export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, editIndex }) {
+  const { date } = useContext(DateContext);
+
   const [title, setTitle] = useState(edit?.title ?? '');
   const [category, setCategory] = useState(edit?.category ?? '');
   const [value, setValue] = useState(edit?.value ?? '');
@@ -102,9 +105,4 @@ NewExpenseGrid.propTypes = {
     expense: PropTypes.bool.isRequired,
   }),
   editIndex: PropTypes.number,
-  date: PropTypes.shape({
-    year: PropTypes.number.isRequired,
-    month: PropTypes.number.isRequired,
-    date: PropTypes.number.isRequired,
-  }),
 };

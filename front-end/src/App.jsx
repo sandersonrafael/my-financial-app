@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import { userAccess } from './db/dataProcess';
+import DateProvider from './contexts/DateProvider';
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [guest, setGuest] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,9 +17,11 @@ export default function App() {
     checkLogin();
   }, []);
 
-  return !(loggedIn || guest) ? (
-    <Login setLoggedIn={setLoggedIn} setGuest={setGuest} loading={loading} />
+  return !(loggedIn) ? (
+    <Login setLoggedIn={setLoggedIn} loading={loading} />
   ) : (
-    <Home loggedIn={loggedIn} />
+    <DateProvider>
+      <Home loggedIn={loggedIn} />
+    </DateProvider>
   );
 }

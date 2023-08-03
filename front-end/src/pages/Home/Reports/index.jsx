@@ -1,14 +1,21 @@
-import { useEffect, useState } from 'react';
-import { loadExpenses } from '../../../db/dataProcess';
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { BiSolidEdit, BiSolidTrash } from 'react-icons/bi';
+
+import { deleteExpense, loadExpenses } from '../../../db/dataProcess';
 import getPeriodReport from '../../../utils/getPeriodReport';
 import formatCurrency from '../../../utils/formatCurrency';
 
 import { NoExpenses, ReportGrid, EmphasisGrid, Select } from './styles';
+import DateContext from '../../../contexts/DateContext';
 
 const periodPTBR = { daily: 'diário', monthly: 'mensal', yearly: 'anual' };
 
 export default function Reports() {
-  const [period, setPeriod] = useState('yearly');
+  const { setDate } = useContext(DateContext);
+  const navigate = useNavigate();
+
+  const [period, setPeriod] = useState('daily');
   const [fullReport, setFullReport] = useState({});
   const [mostRecent, setMostRecent] = useState(true);
 
@@ -20,26 +27,52 @@ export default function Reports() {
     useLoadExpenses();
   }, []);
 
-  const writeReports = () => {
-    return fullReport?.[period]?.map((report, key) => {
-      const period = Object.keys(report)[0];
-      const results = Object.values(report)[0];
-      const { entries, exits, total } = results;
-      return (
-        <ReportGrid key={key}>
-          <span>{period}</span>
-          <span style={{ color: entries > 0 ? 'green' : 'black' }}>{formatCurrency(entries)}</span>
-          <span style={{ color: exits > 0 ? 'red' : 'black' }}>{formatCurrency(exits)}</span>
-          <span
-            style={{ color: total > 0 ? 'green' : total < 0 ? 'red' : 'black' }}
-          >
-            {formatCurrency(total)}
-          </span>
-          <span>{'edit delete'}</span>
-        </ReportGrid>
-      );
-    });
+  const handleEditClick = (year, month, date) => {
+    setDate({ year, month, date });
+    navigate('/');
   };
+
+  const handleDeleteClick = async (year, month, date) => {
+    if (period === 'daily') {
+      const { fullReport } = await deleteExpense({ year, month, date });
+      setFullReport(getPeriodReport(fullReport));
+    }
+    console.log('Fazer o delete para o month ---> envolve a base de dados também');
+    console.log('Fazer o delete para o year ---> envolve a base de dados também');
+  };
+
+  const writeReports = () => fullReport?.[period]?.map((report, key) => {
+    const reportDate = Object.keys(report)[0].split('/');
+    const [year, month, date] = period === 'daily'
+      ? [Number(reportDate[2]), Number(reportDate[1]) -1, Number(reportDate[0])]
+      : ['', '', ''];
+
+    const mapPeriod = Object.keys(report)[0];
+    const results = Object.values(report)[0];
+    const { entries, exits, total } = results;
+
+    return (
+      <ReportGrid key={key}>
+        <span>{mapPeriod}</span>
+        <span style={{ color: entries > 0 ? 'green' : 'black' }}>{formatCurrency(entries)}</span>
+        <span style={{ color: exits > 0 ? 'red' : 'black' }}>{formatCurrency(exits)}</span>
+        <span
+          style={{ color: total > 0 ? 'green' : total < 0 ? 'red' : 'black' }}
+        >
+          {formatCurrency(total)}
+        </span>
+        <span>
+          {period === 'daily' && <BiSolidEdit
+            color="#ffa743"
+            onClick={() => handleEditClick(year, month, date)}
+          />}
+          <BiSolidTrash
+            color="#ff5f5f"
+            onClick={() => handleDeleteClick(year, month, date)}
+          /></span>
+      </ReportGrid>
+    );
+  });
 
   return (
     <>

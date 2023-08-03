@@ -8,7 +8,7 @@ import Error from '../../components/Error';
 import { userLogin, userRegister } from '../../db/dataProcess';
 import { ImSpinner10 } from 'react-icons/im';
 
-export default function Login({ setLoggedIn, setGuest, loading }) {
+export default function Login({ setLoggedIn, loading }) {
   const [registerFields, setRegisterFields] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -125,11 +125,7 @@ export default function Login({ setLoggedIn, setGuest, loading }) {
             {registerFields ? 'Faça Login' : 'Registre-se'}
           </SecondaryButton>
 
-          {!registerFields && <Spacing />/* (
-            <P style={{ paddingBottom: 10 }}>
-            Ou: <span onClick={() => setGuest(true)}>Entre sem uma conta</span>
-            </P>
-          ) */}
+          {!registerFields && <Spacing />}
         </Main>
       )}
     </Container>
@@ -138,6 +134,5 @@ export default function Login({ setLoggedIn, setGuest, loading }) {
 
 Login.propTypes = {
   setLoggedIn: PropTypes.func.isRequired,
-  setGuest: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
 };
