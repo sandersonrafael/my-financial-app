@@ -12,12 +12,10 @@ import DateContext from '../../../contexts/DateContext';
 const periodPTBR = { daily: 'diário', monthly: 'mensal', yearly: 'anual' };
 
 export default function Reports() {
-  const { setDate } = useContext(DateContext);
-  const navigate = useNavigate();
-
-  const [period, setPeriod] = useState('daily');
+  const { setDate, period, setPeriod, mostRecentDate, setMostRecentDate } = useContext(DateContext); // eslint-disable-line
   const [fullReport, setFullReport] = useState({});
-  const [mostRecent, setMostRecent] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const useLoadExpenses = async () => {
@@ -38,7 +36,7 @@ export default function Reports() {
       setFullReport(getPeriodReport(fullReport));
     }
     console.log('Fazer o delete para o month ---> envolve a base de dados também');
-    console.log('Fazer o delete para o year ---> envolve a base de dados também');
+    console.log('Fazer o delete para o month ---> envolve a base de dados também');
   };
 
   const writeReports = () => fullReport?.[period]?.map((report, key) => {
@@ -84,12 +82,15 @@ export default function Reports() {
           <option value="daily">Diário</option>
         </Select>
 
-        <Select value={mostRecent} onChange={(e) => setMostRecent(e.target.value === 'true')}>
+        <Select
+          value={mostRecentDate}
+          onChange={(e) => setMostRecentDate(e.target.value === 'true')}
+        >
           <option value={true}>Mais Recente</option>
           <option value={false}>Mais Antigo</option>
         </Select>
       </section>
-      {Object.keys(fullReport)?.length ? (
+      {fullReport?.[period]?.length ? (
         <>
           <EmphasisGrid>
             <h3>Período</h3>
@@ -98,7 +99,7 @@ export default function Reports() {
             <h3>Total</h3>
             <h3>Ações</h3>
           </EmphasisGrid>
-          {mostRecent ? writeReports()?.reverse() : writeReports()}
+          {mostRecentDate ? writeReports()?.reverse() : writeReports()}
           <section></section>
           {fullReport?.[period+'Totals']?.map((result, key) => {
             const { period, entries, exits, total } = result;
@@ -111,7 +112,9 @@ export default function Reports() {
               >
                 {formatCurrency(total)}
               </h3>
-              <h3></h3>
+              <h3>
+                <BiSolidTrash color="#ff5f5f" onClick={console.log('Fazer handleDeleteAll')}/>
+              </h3>
             </EmphasisGrid>;
           })}
         </>

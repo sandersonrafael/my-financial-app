@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Container, DaysGrid, MonthsFlex } from './styles';
 import getCalendar from './js/getCalendar';
 import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from 'react-icons/bs';
 import defaultDaysList from './defaultValues/daysList';
 import defaultMonthsList from './defaultValues/monthsList';
+import DateContext from '../../contexts/DateContext';
+import yearsMap from './js/yearsMap';
 
 export default function Calendar({
   setReturn,
@@ -18,6 +20,7 @@ export default function Calendar({
   const [calendar, setCalendar] = useState([]);
   const [dateButtons, setDateButtons] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+  const { date: fullDate } = useContext(DateContext);
 
   useEffect(() => {
     const newCalendar = getCalendar(relativeMonth);
@@ -33,9 +36,40 @@ export default function Calendar({
     setWhiteSpaces(newWhiteSpaces);
     setDateButtons(newDateButtons);
 
-    if (relativeMonth === 0) setSelectedDate(new Date().getDate());
+    const today = {
+      year: new Date().getFullYear(),
+      month: new Date().getMonth(),
+    };
+    const { year, month } = fullDate;
+    const newRelativeMonth = (year - today.year) * 12 + (month - today.month);
+
+    if (relativeMonth === newRelativeMonth)setSelectedDate(fullDate.date);
     else setSelectedDate(null);
   }, [relativeMonth]);
+
+  useEffect(() => {
+    const { year, month, date } = fullDate;
+    const today = {
+      year: new Date().getFullYear(),
+      month: new Date().getMonth(),
+    };
+    const newRelativeMonth = (year - today.year) * 12 + (month - today.month);
+    const newCalendar = getCalendar(newRelativeMonth);
+    setRelativeMonth(newRelativeMonth);
+    setCalendar(newCalendar);
+    setSelectedDate(date);
+  }, [fullDate]);
+
+  const handleChangeYear = (e) => {
+    const today = {
+      year: new Date().getFullYear(),
+      month: new Date().getMonth(),
+    };
+    const { month } = fullDate;
+    const year = Number(e.target.value);
+    const newRelativeMonth = (year - today.year) * 12 + (month - today.month);
+    setRelativeMonth(newRelativeMonth);
+  };
 
   const handleSelectDate = (date) => {
     setSelectedDate(date);
@@ -59,9 +93,14 @@ export default function Calendar({
 
   return (
     <Container style={style}>
+
+      <select onChange={handleChangeYear}>
+        {yearsMap.map((year, key) => <option value={year} key={key}>{year}</option>)}
+      </select>
+
       <MonthsFlex $primaryColor={primaryColor}>
         <BsArrowLeftSquareFill onClick={() => setRelativeMonth((v) => v - 1)} />
-        <h1>{monthsList[calendar.currentMonth]}, {calendar.currentYear}</h1>
+        <h2>{monthsList[calendar.currentMonth]}</h2>
         <BsArrowRightSquareFill
           onClick={() => setRelativeMonth((v) => v + 1)}
         />

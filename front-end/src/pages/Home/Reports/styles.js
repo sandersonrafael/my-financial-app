@@ -20,6 +20,17 @@ export const EmphasisGrid = styled.div`
     font-weight: 600;
     padding: 15px 0;
   }
+
+  svg {
+    cursor: pointer;
+    font-size: 24px;
+    padding: 0;
+    margin: 0 5px;
+
+    &:hover {
+      opacity: .7;
+    }
+  }
 `;
 
 export const ReportGrid = styled.div`

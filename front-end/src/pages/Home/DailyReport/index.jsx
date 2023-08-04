@@ -65,7 +65,7 @@ export default function DailyReport() {
               backgroundColor: 'rgba(0, 0, 0, .9)',
             }}
           >
-            <Calendar setReturn={setDate} />
+            <Calendar setReturn={setDate} fullDate={date} />
           </div>
         </div>
 

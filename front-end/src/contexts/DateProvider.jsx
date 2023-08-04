@@ -9,10 +9,16 @@ export default function DateProvider({ children }) {
     month: new Date().getMonth(),
     date: new Date().getDate(),
   });
+  const [period, setPeriod] = useState('daily');
+  const [mostRecentDate, setMostRecentDate] = useState(true);
 
   const value = {
     date,
     setDate,
+    period,
+    setPeriod,
+    mostRecentDate,
+    setMostRecentDate,
   };
 
   return (
