@@ -16,6 +16,11 @@
   Deletar todas datas? sim -> função de deletar todas datas executa; nao -> volta ao estado inicial
 }
 
-5 -> Responsividade nas páginas: Geral (Home), Relatório Diário, Relatório por Período
+5 -> Responsividade {
+  Menu Hamburger
+  NewExpenseGrid
+  Home
+  Reports
+}
 
 6 -> Fazer recuperação de senha?
