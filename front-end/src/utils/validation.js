@@ -69,7 +69,12 @@ export const validateRegister = (name, email, password, repeatPassword) => {
   errors.passwordMsgs = validatePassword(password);
   errors.repeatPasswordMsgs = validateRepeatPassword(password, repeatPassword);
 
-  return errors;
+  if (
+    errors.nameMsgs.length !== 0 ||
+    errors.emailMsgs.length !== 0 ||
+    errors.passwordMsgs.length !== 0 ||
+    errors.repeatPasswordMsgs.length !== 0
+  ) return errors;
 };
 
 export const validateAttUserData = (name, email, password, newPassword, repeatNewPassword) => {
