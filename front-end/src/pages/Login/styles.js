@@ -86,24 +86,3 @@ export const AskCamp = styled.div`
 export const Spacing = styled.p`
   margin-bottom: 20px;
 `;
-
-export const Spinner = styled.div`
-    width: 90px;
-    height: 90px;
-    border-radius: 45px;
-    background-color: transparent;
-    animation: spin 1.4s ease-in-out infinite;
-  svg {
-    font-size: 90px;
-    color: white;
-  }
-
-  @keyframes spin {
-    0% {
-      rotate: 0deg;
-    }
-    100% {
-      rotate: 360deg;
-    }
-  }
-`;

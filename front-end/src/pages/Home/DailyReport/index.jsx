@@ -8,6 +8,7 @@ import { loadExpenses } from '../../../db/dataProcess';
 import FinancialGrid from '../FinancialGrid';
 import NewExpenseGrid from '../NewExpenseGrid';
 import DateContext from '../../../contexts/DateContext';
+import Loading from '../../../components/Loading';
 
 const load = async (date) => {
   const { fullReport } = await loadExpenses();
@@ -19,14 +20,23 @@ export default function DailyReport() {
   const [newExpenseVisibility, setNewExpenseVisibility] = useState(false);
   const [userExpenses, setUserExpenses] = useState([]);
   const { date, setDate } = useContext(DateContext);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const attList = async () => setUserExpenses(await load(date));
+    const attList = async () => {
+      setLoading(true);
+      setUserExpenses(await load(date));
+      setLoading(false);
+    };
     attList();
   }, []);
 
   useEffect(() => {
-    const attList = async () => setUserExpenses(await load(date));
+    const attList = async () => {
+      setLoading(true);
+      setUserExpenses(await load(date));
+      setLoading(false);
+    };
     attList();
     setCalendarVisibility(false);
   }, [date]);
@@ -83,10 +93,14 @@ export default function DailyReport() {
         </div>
       </section>
 
-      <FinancialGrid
-        userExpenses={userExpenses}
-        setUserExpenses={setUserExpenses}
-      />
+      {loading ? (
+        <Loading $cl={primaryColor} $sz={60} style={{ margin: '0 auto', padding: '20px 0' }} />
+      ) : (
+        <FinancialGrid
+          userExpenses={userExpenses}
+          setUserExpenses={setUserExpenses}
+        />
+      )}
     </>
   );
 }

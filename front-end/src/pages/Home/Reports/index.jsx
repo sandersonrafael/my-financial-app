@@ -8,19 +8,24 @@ import formatCurrency from '../../../utils/formatCurrency';
 
 import { NoExpenses, ReportGrid, EmphasisGrid, Select } from './styles';
 import DateContext from '../../../contexts/DateContext';
+import Loading from '../../../components/Loading';
+import { primaryColor } from '../../../colors/colors';
 
 const periodPTBR = { daily: 'diário', monthly: 'mensal', yearly: 'anual' };
 
 export default function Reports() {
   const { setDate, period, setPeriod, mostRecentDate, setMostRecentDate } = useContext(DateContext); // eslint-disable-line
   const [fullReport, setFullReport] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const useLoadExpenses = async () => {
+      setLoading(true);
       const { fullReport: newReport } = await loadExpenses();
       setFullReport(getPeriodReport(newReport));
+      setLoading(false);
     };
     useLoadExpenses();
   }, []);
@@ -36,7 +41,8 @@ export default function Reports() {
       setFullReport(getPeriodReport(fullReport));
     }
     console.log('Fazer o delete para o month ---> envolve a base de dados também');
-    console.log('Fazer o delete para o month ---> envolve a base de dados também');
+    console.log('Fazer o delete para o year ---> envolve a base de dados também');
+    console.log('Fazer o delete total ---> envolve a base de dados também');
   };
 
   const writeReports = () => fullReport?.[period]?.map((report, key) => {
@@ -119,10 +125,13 @@ export default function Reports() {
           })}
         </>
       ) : (
-        <NoExpenses>
-          <h3>Nenhum dado para exibir.</h3>
-          <h3>Adicione receitas ou despesas para atualizar o relatório {periodPTBR[period]}.</h3>
-        </NoExpenses>
+        loading ?
+          <Loading $cl={primaryColor} $sz={60} style={{ margin: '0 auto', padding: '20px 0' }} />
+          :
+          <NoExpenses>
+            <h3>Nenhum dado para exibir.</h3>
+            <h3>Adicione receitas ou despesas para atualizar o relatório {periodPTBR[period]}.</h3>
+          </NoExpenses>
       )}
     </>
   );

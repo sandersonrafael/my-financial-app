@@ -37,66 +37,68 @@ export default function FinancialGrid({ userExpenses, setUserExpenses }) {
     // setUserExpenses(getDailyReportStorage(date));
   };
 
-  return userExpenses.length === 0 ? (
-    <NoExpenses>
-      <h3>Nenhum dado para exibir.</h3>
-      <h3>Adicione receitas ou despesas para atualizar o relatório diário.</h3>
-    </NoExpenses>
-  ) : (
-    <>
-      <Container>
-        <header>
-          <h3>Título</h3>
-          <h3>Categoria</h3>
-          <h3>Valor</h3>
-          <h3>Ações</h3>
-        </header>
-        {userExpenses.map(({ title, category, value, expense }, index) => (
-          <div key={index}>
-            <span>{title}</span>
-            <span>{category}</span>
-            <span style={{ color: value !== 0 ? expense ? 'red': 'green' : '#555' }}>
-              {expense && '-'}
-              {formatCurrency(value)}
-            </span>
-            <span>
-              <div>
-                <BiSolidEdit
-                  color="#ffa743"
-                  onClick={() => openEditScreen(index)}
-                />
-                <BiSolidTrash
-                  color="#ff5f5f"
-                  onClick={() => handleDelete(index)}
-                />
-              </div>
-            </span>
-          </div>
-        ))}
-        <footer>
-          <h3>Total</h3>
-          <h3>{total > 0 ? 'Lucro' : total === 0 ? 'Empate' : 'Despesa' }</h3>
-          <h3 style={{ color: total > 0 ? 'green' : total === 0 ? '#333' : 'red' }}>
-            {formatCurrency(total)}
-          </h3>
-          <h3>
-            {userExpenses.length > 0 && <BiSolidTrash
-              color="#ff5f5f"
-              onClick={handleDelete}
-            />}
-          </h3>
-        </footer>
-      </Container>
-      {editVisibility &&
-        <NewExpenseGrid
-          visibility={editVisibility}
-          setVisibility={setEditVisibility}
-          setUserExpenses={setUserExpenses}
-          editIndex={editIndex}
-          edit={edit}
-        />
-      }
-    </>
+  return (
+    userExpenses.length === 0 ? (
+      <NoExpenses>
+        <h3>Nenhum dado para exibir.</h3>
+        <h3>Adicione receitas ou despesas para atualizar o relatório diário.</h3>
+      </NoExpenses>
+    ) : (
+      <>
+        <Container>
+          <header>
+            <h3>Título</h3>
+            <h3>Categoria</h3>
+            <h3>Valor</h3>
+            <h3>Ações</h3>
+          </header>
+          {userExpenses.map(({ title, category, value, expense }, index) => (
+            <div key={index}>
+              <span>{title}</span>
+              <span>{category}</span>
+              <span style={{ color: value !== 0 ? expense ? 'red': 'green' : '#555' }}>
+                {expense && '-'}
+                {formatCurrency(value)}
+              </span>
+              <span>
+                <div>
+                  <BiSolidEdit
+                    color="#ffa743"
+                    onClick={() => openEditScreen(index)}
+                  />
+                  <BiSolidTrash
+                    color="#ff5f5f"
+                    onClick={() => handleDelete(index)}
+                  />
+                </div>
+              </span>
+            </div>
+          ))}
+          <footer>
+            <h3>Total</h3>
+            <h3>{total > 0 ? 'Lucro' : total === 0 ? 'Empate' : 'Despesa' }</h3>
+            <h3 style={{ color: total > 0 ? 'green' : total === 0 ? '#333' : 'red' }}>
+              {formatCurrency(total)}
+            </h3>
+            <h3>
+              {userExpenses.length > 0 && <BiSolidTrash
+                color="#ff5f5f"
+                onClick={handleDelete}
+              />}
+            </h3>
+          </footer>
+        </Container>
+        {editVisibility &&
+          <NewExpenseGrid
+            visibility={editVisibility}
+            setVisibility={setEditVisibility}
+            setUserExpenses={setUserExpenses}
+            editIndex={editIndex}
+            edit={edit}
+          />
+        }
+      </>
+    )
   );
 }
 

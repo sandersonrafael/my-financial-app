@@ -2,11 +2,11 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Container, Main, MainHeader, Input, P, Spacing } from './styles';
-import { AskCamp, Spinner } from './styles';
+import { AskCamp } from './styles';
 import { PrimaryButton, SecondaryButton } from '../../components/Buttons';
 import Error from '../../components/Error';
 import { userLogin, userRegister } from '../../db/dataProcess';
-import { ImSpinner10 } from 'react-icons/im';
+import Loading from '../../components/Loading';
 
 export default function Login({ setLoggedIn, loading }) {
   const [registerFields, setRegisterFields] = useState(false);
@@ -15,6 +15,7 @@ export default function Login({ setLoggedIn, loading }) {
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [manualEnterLoading, setManualEnterLoading] = useState(false);
 
   const handleChangeLoginRegister = () => {
     setRegisterFields(!registerFields);
@@ -26,10 +27,11 @@ export default function Login({ setLoggedIn, loading }) {
   };
 
   const handleLoginOrRegister = async () => {
+    setManualEnterLoading(true);
     const connectUser = registerFields
       ? await userRegister(name, email, password, repeatPassword)
       : await userLogin(email, password);
-
+    setManualEnterLoading(false);
     if (connectUser.id) {
       setName(connectUser.name);
       setEmail(connectUser.email);
@@ -41,9 +43,7 @@ export default function Login({ setLoggedIn, loading }) {
   return (
     <Container>
       {loading ? (
-        <Spinner>
-          <ImSpinner10 />
-        </Spinner>
+        <Loading />
       ) : (
         <Main>
           <MainHeader>
@@ -113,7 +113,11 @@ export default function Login({ setLoggedIn, loading }) {
             style={{ margin: '10px 40px 15px' }}
             onClick={handleLoginOrRegister}
           >
-            {registerFields ? 'Registrar-se' : 'Entrar'}
+            {manualEnterLoading ? (
+              <Loading $sz={21} style={{ margin: '0 auto' }} />
+            ) : (
+              registerFields ? 'Registrar-se' : 'Entrar'
+            )}
           </PrimaryButton>
 
           <P>{registerFields ? 'Já' : 'Ainda não'} possui uma conta?</P>

@@ -4,6 +4,8 @@ import { PrimaryButton, SecondaryButton } from '../../../components/Buttons';
 import Error from '../../../components/Error';
 import { attUserData } from '../../../db/dataProcess';
 import Success from '../../../components/Success';
+import Loading from '../../../components/Loading';
+import { primaryColor } from '../../../colors/colors';
 
 const getName = () => localStorage.getItem('userAccess')?.split(' ')?.splice(3)?.join(' ') || '';
 const getEmail = () => localStorage.getItem('userAccess')?.split(' ')?.[2] || '';
@@ -17,6 +19,7 @@ export default function UserData() {
   const [newPassword, setNewPassword] = useState('');
   const [repeatNewPassword, setRepeatNewPassword] = useState('');
   const [alerts, setAlerts] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const resetStates = () => {
     setName(getName());
@@ -31,9 +34,12 @@ export default function UserData() {
     if (!editingUserData && !editingPassword) return setEditingUserData(true);
 
     if (editingUserData || editingPassword) {
+      setLoading(true);
+
       const apiResponse =
         await attUserData(name, email, password, newPassword, repeatNewPassword, editingPassword);
 
+      setLoading(false);
       setAlerts(apiResponse);
 
       if (apiResponse.success) {
@@ -121,6 +127,7 @@ export default function UserData() {
               {editingUserData || editingPassword ? 'Cancelar' : 'Mudar Senha'}
             </SecondaryButton>
           </div>
+          {loading && <Loading $cl={primaryColor} $sz={45} style={{ margin: '22px 0 0' }} />}
         </Form>
       </div>
     </>
