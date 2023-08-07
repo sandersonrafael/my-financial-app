@@ -23,7 +23,7 @@ export default function Calendar({
   const [dateButtons, setDateButtons] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const { date: fullDate } = useContext(DateContext);
-  const [selectValue, setSelectValue] = useState(fullDate.year);
+  const [selectYear, setSelectYear] = useState(fullDate.year);
 
   useEffect(() => {
     const newCalendar = getCalendar(relativeMonth);
@@ -64,7 +64,7 @@ export default function Calendar({
   }, [fullDate]);
 
   const handleChangeYear = (e) => {
-    setSelectValue(e.target.value);
+    setSelectYear(Number(e.target.value));
     const today = {
       year: new Date().getFullYear(),
       month: new Date().getMonth(),
@@ -84,6 +84,24 @@ export default function Calendar({
     });
   };
 
+  const handleSubMonth = () => {
+    if (selectYear > yearsMap[0]) {
+      setRelativeMonth((v) => v - 1);
+      if (calendar.currentMonth === 0) setSelectYear((year) => year - 1);
+    } else {
+      if (calendar.currentMonth > 0) setRelativeMonth((v) => v - 1);
+    }
+  };
+
+  const handleAddMonth = () => {
+    if (selectYear < yearsMap[yearsMap.length - 1]) {
+      setRelativeMonth((v) => v + 1);
+      if (calendar.currentMonth === 0) setSelectYear((year) => year + 1);
+    } else {
+      if (calendar.currentMonth < 11) setRelativeMonth((v) => v + 1);
+    }
+  };
+
   const dateIsGray = (date) => {
     const now = new Date().getTime();
     const checkDate = new Date(
@@ -98,7 +116,7 @@ export default function Calendar({
   return (
     <Container style={style}>
 
-      <select onChange={handleChangeYear} value={selectValue} >
+      <select onChange={handleChangeYear} value={selectYear} >
         {yearsMap.map((year, key) => <option value={year} key={key}>{year}</option>)}
       </select>
 
@@ -107,10 +125,10 @@ export default function Calendar({
       </button>
 
       <MonthsFlex $primaryColor={primaryColor}>
-        <BsArrowLeftSquareFill onClick={() => setRelativeMonth((v) => v - 1)} />
+        <BsArrowLeftSquareFill onClick={handleSubMonth} />
         <h2>{monthsList[calendar.currentMonth]}</h2>
         <BsArrowRightSquareFill
-          onClick={() => setRelativeMonth((v) => v + 1)}
+          onClick={handleAddMonth}
         />
       </MonthsFlex>
       <hr />
