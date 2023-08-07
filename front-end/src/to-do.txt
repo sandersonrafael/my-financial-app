@@ -1,8 +1,3 @@
-1 -> {
-  Colocar o Loading como um componente global e reutilizar mudando font-size e color
-  Fazer loading para relatório diário e por período, enquanto busca na base de dados
-}
-
 2 -> Fazer Delete Month, Delete Year e Delete All ou implementar a rota de Delete p/ todos os casos
 
 3 -> {

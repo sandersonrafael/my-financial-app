@@ -7,12 +7,44 @@ export const Container = styled.div`
   background-color: #fff;
   box-shadow: 0 0 7px 3px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
+  position: relative;
+  color: #333;
+
+  select {
+    display: block;
+    margin: 0 auto;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 8px;
+    font-size: 17px;
+    cursor: pointer;
+    border-bottom: 1px solid #aaa;
+    color: #333;
+  }
+
+  &>button {
+    position: absolute;
+    right: 10.5px;
+    top: 10.5px;
+    font-size: 19px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    &:hover {
+      scale: 1.1;
+      transition: all .3s ease;
+    }
+  }
 `;
 
 export const MonthsFlex = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: #333;
 
   * {
     margin: 10px;
@@ -45,7 +77,7 @@ export const Button = styled.button`
   background-color: ${({ selected, $primaryColor }) =>
     selected ? $primaryColor ?? '#119edf' : 'transparent'};
   color: ${({ selected, $dateIsGray }) =>
-    selected ? '#fff' : $dateIsGray ? '#ccc' : '#000'};
+    selected ? '#fff' : $dateIsGray ? '#ccc' : '#333'};
   border: none;
   cursor: pointer;
 

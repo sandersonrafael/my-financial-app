@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Container, DaysGrid, MonthsFlex } from './styles';
 import getCalendar from './js/getCalendar';
 import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from 'react-icons/bs';
+import { GrClose } from 'react-icons/gr';
 import defaultDaysList from './defaultValues/daysList';
 import defaultMonthsList from './defaultValues/monthsList';
 import DateContext from '../../contexts/DateContext';
@@ -14,6 +15,7 @@ export default function Calendar({
   monthsList = defaultMonthsList,
   daysList = defaultDaysList,
   primaryColor,
+  handleCloseCalendar,
 }) {
   const [relativeMonth, setRelativeMonth] = useState(0);
   const [whiteSpaces, setWhiteSpaces] = useState([]);
@@ -21,6 +23,7 @@ export default function Calendar({
   const [dateButtons, setDateButtons] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const { date: fullDate } = useContext(DateContext);
+  const [selectValue, setSelectValue] = useState(fullDate.year);
 
   useEffect(() => {
     const newCalendar = getCalendar(relativeMonth);
@@ -61,6 +64,7 @@ export default function Calendar({
   }, [fullDate]);
 
   const handleChangeYear = (e) => {
+    setSelectValue(e.target.value);
     const today = {
       year: new Date().getFullYear(),
       month: new Date().getMonth(),
@@ -94,9 +98,13 @@ export default function Calendar({
   return (
     <Container style={style}>
 
-      <select onChange={handleChangeYear}>
+      <select onChange={handleChangeYear} value={selectValue} >
         {yearsMap.map((year, key) => <option value={year} key={key}>{year}</option>)}
       </select>
+
+      <button onClick={handleCloseCalendar}>
+        <GrClose />
+      </button>
 
       <MonthsFlex $primaryColor={primaryColor}>
         <BsArrowLeftSquareFill onClick={() => setRelativeMonth((v) => v - 1)} />
@@ -136,4 +144,5 @@ Calendar.propTypes = {
   monthsList: PropTypes.arrayOf(PropTypes.string),
   daysList: PropTypes.arrayOf(PropTypes.string),
   primaryColor: PropTypes.string,
+  handleCloseCalendar: PropTypes.func,
 };

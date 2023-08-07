@@ -75,7 +75,13 @@ export default function DailyReport() {
               backgroundColor: 'rgba(0, 0, 0, .9)',
             }}
           >
-            <Calendar setReturn={setDate} fullDate={date} />
+            <div style={{ height: 396 }}>
+              <Calendar
+                setReturn={setDate}
+                fullDate={date}
+                handleCloseCalendar={() => setCalendarVisibility(false)}
+              />
+            </div>
           </div>
         </div>
 

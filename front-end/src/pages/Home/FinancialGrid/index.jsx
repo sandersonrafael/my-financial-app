@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { BiSolidEdit, BiSolidTrash } from 'react-icons/bi';
+import { BiSolidCheckShield, BiSolidEdit, BiSolidTrash } from 'react-icons/bi';
 import PropTypes from 'prop-types';
 
 import NewExpenseGrid from '../NewExpenseGrid';
@@ -16,6 +16,7 @@ export default function FinancialGrid({ userExpenses, setUserExpenses }) {
   const [editIndex, setEditIndex] = useState(null);
   const [editVisibility, setEditVisibility] = useState(false);
   const [edit, setEdit] = useState({});
+  const [deleting, setDeleting] = useState({ active: false, index: null });
 
   useEffect(() => {
     setTotal(userExpenses.reduce((sum, entry) => {
@@ -29,10 +30,17 @@ export default function FinancialGrid({ userExpenses, setUserExpenses }) {
     setEditVisibility(true);
   };
 
-  const handleDelete = async (index) => {
+  const handleDelete = (index) => {
+    index = typeof index === 'number' ? index : undefined;
+    setDeleting({ active: true, index });
+    setTimeout(() => setDeleting({ active: false, index: null }), 1500);
+  };
+
+  const handleDeleteConfirm = async (index) => {
     index = typeof index === 'number' ? index : null;
     const { fullReport } = await deleteExpense(date, index);
     setUserExpenses(fullReport?.[date.year]?.[date.month]?.[date.date] || []);
+    setDeleting({ active: false, index: null });
     // deleteDailyReportStorage(date, index);
     // setUserExpenses(getDailyReportStorage(date));
   };
@@ -66,10 +74,17 @@ export default function FinancialGrid({ userExpenses, setUserExpenses }) {
                     color="#ffa743"
                     onClick={() => openEditScreen(index)}
                   />
-                  <BiSolidTrash
-                    color="#ff5f5f"
-                    onClick={() => handleDelete(index)}
-                  />
+                  {deleting?.active && deleting?.index === index ? (
+                    <BiSolidCheckShield
+                      color="#ff5f5f"
+                      onClick={() => handleDeleteConfirm(index)}
+                    />
+                  ) : (
+                    <BiSolidTrash
+                      color="#ff5f5f"
+                      onClick={() => handleDelete(index)}
+                    />
+                  )}
                 </div>
               </span>
             </div>
@@ -81,10 +96,17 @@ export default function FinancialGrid({ userExpenses, setUserExpenses }) {
               {formatCurrency(total)}
             </h3>
             <h3>
-              {userExpenses.length > 0 && <BiSolidTrash
-                color="#ff5f5f"
-                onClick={handleDelete}
-              />}
+              {userExpenses.length <= 0 ? '' : deleting.active && deleting.index === undefined ?
+                <BiSolidCheckShield
+                  color="#ff5f5f"
+                  onClick={handleDeleteConfirm}
+                />
+                :
+                <BiSolidTrash
+                  color="#ff5f5f"
+                  onClick={handleDelete}
+                />
+              }
             </h3>
           </footer>
         </Container>
