@@ -96,7 +96,7 @@ export default function Calendar({
   const handleAddMonth = () => {
     if (selectYear < yearsMap[yearsMap.length - 1]) {
       setRelativeMonth((v) => v + 1);
-      if (calendar.currentMonth === 0) setSelectYear((year) => year + 1);
+      if (calendar.currentMonth === 11) setSelectYear((year) => year + 1);
     } else {
       if (calendar.currentMonth < 11) setRelativeMonth((v) => v + 1);
     }

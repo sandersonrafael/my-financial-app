@@ -1,14 +1,10 @@
 2 -> Fazer Delete Month, Delete Year e Delete All ou implementar a rota de Delete p/ todos os casos
 
-3 -> {
-  Calendar com ano variável em um select -> usar o setDate do context para alterar em -12 ou +12 meses
-  Calendar com botão de fechar
-  Calendar posicionado de maneira a não Ficar se movendo na tela ao clicar em mudar mês
-}
-
 4 -> {
   Fazer um componente de confirmação que recebe a função e se o usuário confirmar, executa, por ex:
   Deletar todas datas? sim -> função de deletar todas datas executa; nao -> volta ao estado inicial
+
+  Implementar nos deletes de months, years e all da mesma maneira que implementado no Daily Report
 }
 
 5 -> Responsividade {
