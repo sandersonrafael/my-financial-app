@@ -16,8 +16,18 @@ const validateExpenseDelete = (req, res, next) => {
     const index = req.body.index;
     if (index !== undefined && index !== null && typeof index !== 'number')
       return res.status(400).json({
-        message: 'Necessário informar um índice válido, do tipo number para editar a despesa.',
+        message: 'Necessário informar um índice válido, do tipo number para deletar a despesa.',
       });
+
+    const deleteMonth = req.body.deleteMonth;
+    if (deleteMonth && typeof deleteMonth !== 'boolean') return res.status(400).json({
+      message: 'Necessário informar um deleteMonth do tipo boolean caso deseje deletar o mês.',
+    });
+
+    const deleteYear = req.body.deleteYear;
+    if (deleteYear && typeof deleteYear !== 'boolean') return res.status(400).json({
+      message: 'Necessário informar um deleteYear do tipo boolean caso deseje deletar o ano.',
+    });
   } catch(error) {
     return res.status(500).json({
       message: 'Ocorreu um erro no servidor. Tenta novamente mais tarde!',

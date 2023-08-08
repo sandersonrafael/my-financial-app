@@ -89,7 +89,7 @@ export const updateExpense = async (fullDate, newExpense, index) => {
   return await mongoDB.updateExpense(id, token, fullDate, newExpense, index);
 };
 
-export const deleteExpense = async (fullDate, index) => {
+export const deleteExpense = async (fullDate, index, deleteMonth, deleteYear) => {
   const [id, token] = getIdAndToken();
-  return await mongoDB.deleteExpense(id, token, fullDate, index);
+  return await mongoDB.deleteExpense(id, token, fullDate, index, deleteMonth, deleteYear);
 };

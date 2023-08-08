@@ -8,6 +8,7 @@ import { deleteExpense } from '../../../db/dataProcess';
 import formatCurrency from '../../../utils/formatCurrency';
 import { Container, NoExpenses } from './styles';
 import DateContext from '../../../contexts/DateContext';
+import Loading from '../../../components/Loading';
 
 export default function FinancialGrid({ userExpenses, setUserExpenses }) {
   const { date } = useContext(DateContext);
@@ -16,7 +17,9 @@ export default function FinancialGrid({ userExpenses, setUserExpenses }) {
   const [editIndex, setEditIndex] = useState(null);
   const [editVisibility, setEditVisibility] = useState(false);
   const [edit, setEdit] = useState({});
+  const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState({ active: false, index: null });
+  const [interval, setInterval] = useState(null);
 
   useEffect(() => {
     setTotal(userExpenses.reduce((sum, entry) => {
@@ -31,15 +34,22 @@ export default function FinancialGrid({ userExpenses, setUserExpenses }) {
   };
 
   const handleDelete = (index) => {
+    clearInterval(interval);
     index = typeof index === 'number' ? index : undefined;
     setDeleting({ active: true, index });
-    setTimeout(() => setDeleting({ active: false, index: null }), 1500);
+    setInterval(setTimeout(() => setDeleting({ active: false, index: null }), 1200));
   };
 
   const handleDeleteConfirm = async (index) => {
+    clearInterval(interval);
+
     index = typeof index === 'number' ? index : null;
+    setLoading(true);
+
     const { fullReport } = await deleteExpense(date, index);
     setUserExpenses(fullReport?.[date.year]?.[date.month]?.[date.date] || []);
+
+    setLoading(false);
     setDeleting({ active: false, index: null });
     // deleteDailyReportStorage(date, index);
     // setUserExpenses(getDailyReportStorage(date));
@@ -69,23 +79,27 @@ export default function FinancialGrid({ userExpenses, setUserExpenses }) {
                 {formatCurrency(value)}
               </span>
               <span>
-                <div>
-                  <BiSolidEdit
-                    color="#ffa743"
-                    onClick={() => openEditScreen(index)}
-                  />
-                  {deleting?.active && deleting?.index === index ? (
-                    <BiSolidCheckShield
-                      color="#ff5f5f"
-                      onClick={() => handleDeleteConfirm(index)}
-                    />
-                  ) : (
-                    <BiSolidTrash
-                      color="#ff5f5f"
-                      onClick={() => handleDelete(index)}
-                    />
+                {loading && deleting.index === index ?
+                  <Loading $sz={24} $cl="#ff5f5f" />
+                  : (
+                    <div>
+                      <BiSolidEdit
+                        color="#ffa743"
+                        onClick={() => openEditScreen(index)}
+                      />
+                      {deleting.active && deleting.index === index ? (
+                        <BiSolidCheckShield
+                          color="#ff5f5f"
+                          onClick={() => handleDeleteConfirm(index)}
+                        />
+                      ) : (
+                        <BiSolidTrash
+                          color="#ff5f5f"
+                          onClick={() => handleDelete(index)}
+                        />
+                      )}
+                    </div>
                   )}
-                </div>
               </span>
             </div>
           ))}

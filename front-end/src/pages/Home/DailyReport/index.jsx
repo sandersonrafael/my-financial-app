@@ -100,7 +100,11 @@ export default function DailyReport() {
       </section>
 
       {loading ? (
-        <Loading $cl={primaryColor} $sz={60} style={{ margin: '0 auto', padding: '20px 0' }} />
+        <Loading
+          style={{ width: 60, height: 60, margin: '0 auto', padding: '20px 0' }}
+          $cl={primaryColor}
+          $sz={60}
+        />
       ) : (
         <FinancialGrid
           userExpenses={userExpenses}

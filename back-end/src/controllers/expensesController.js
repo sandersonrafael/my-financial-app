@@ -55,16 +55,28 @@ const deleteExpenses = async (req, res) => {
     const { id } = req.params;
     const { year, month, date } = req.body.fullDate;
     const index = req.body.index;
+    const deleteMonth = req.body.deleteMonth;
+    const deleteYear = req.body.deleteYear;
 
     const { relatedId, fullReport } = await ExpenseList.findOne({ relatedId: id });
 
     if (!fullReport[year]) return res.status(400).json({
       message: 'Não existem registros para o ano informado.',
     });
+    if (deleteYear) {
+      delete fullReport[year];
+      await ExpenseList.findOneAndUpdate({ relatedId }, { fullReport });
+      return res.status(200).json({ fullReport });
+    }
 
     if (!fullReport[year][month]) return res.status(400).json({
       message: 'Não existem registros para o mês informado.',
     });
+    if (deleteMonth) {
+      delete fullReport[year][month];
+      await ExpenseList.findOneAndUpdate({ relatedId }, { fullReport });
+      return res.status(200).json({ fullReport });
+    }
 
     if (!fullReport[year][month][date]) return res.status(400).json({
       message: 'Não existem registros para o dia informado.',

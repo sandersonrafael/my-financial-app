@@ -9,34 +9,52 @@ export const Container = styled.div`
   bottom: 0;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, .9);
+  background-color: rgba(0, 0, 0, .85);
 
   &>div {
     padding: 25px;
     background-color: #fff;
     border-radius: 8px;
     text-align: center;
+    width: 100%;
+    max-width: 260px;
 
-    div {
-      & > * {
-        padding: 5px 15px;
-        margin: 0 5px;
+    &>div {
+      position: relative;
+      p {
+        position: absolute;
+        display: inline-block;
+        bottom: 5px;
+        left: 0;
+        right: 0;
       }
-
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
 
       input,
       select {
-        border: none;
+        margin-bottom: 25px;
+        padding: 12px 15px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
         outline: none;
-        border-bottom: 1px solid #000;
+        background-color: transparent;
+        cursor: text;
+        width: 100%;
+        max-width: calc(100% - 32px);
+        font-size: 17px;
+      }
+      select {
+        cursor: pointer;
+        padding: 15px;
+        max-width: 100%;
       }
     }
 
-    section {
-      button {
-        margin: 25px 10px 0;
+    &>section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      &>button {
+        width: 48%;
       }
     }
   }

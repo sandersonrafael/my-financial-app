@@ -130,8 +130,8 @@ const mongoDB = {
       return false;
     }
   },
-  deleteExpense: async (id, token, fullDate, index = null) => {
-    const body = { fullDate, index };
+  deleteExpense: async (id, token, fullDate, index = null, deleteMonth = false, deleteYear = false) => { // eslint-disable-line
+    const body = { fullDate, index, deleteMonth, deleteYear };
     try {
       const res = await fetch(`${host}/user/expenses/${id}`, {
         method: 'DELETE',

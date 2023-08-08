@@ -1,18 +1,3 @@
-1 -> new Expense Grid será vertical, no estilo form para ser responsivo
-
-2 -> Fazer Delete Month, Delete Year e Delete All ou implementar a rota de Delete p/ todos os casos
-
-4 -> {
-  Fazer um componente de confirmação que recebe a função e se o usuário confirmar, executa, por ex:
-  Deletar todas datas? sim -> função de deletar todas datas executa; nao -> volta ao estado inicial
-
-  Implementar nos deletes de months, years e all da mesma maneira que implementado no Daily Report
-}
-
-5 -> {
-  ver a questão do hash se foi corrigido, para poder dar f5 sem perder a página atual como 404
-}
-
 6 -> Responsividade {
   Menu Hamburger
   NewExpenseGrid

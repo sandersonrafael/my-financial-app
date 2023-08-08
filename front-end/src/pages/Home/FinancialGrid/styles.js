@@ -50,4 +50,9 @@ export const Container = styled.div`
       opacity: .7;
     }
   }
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;

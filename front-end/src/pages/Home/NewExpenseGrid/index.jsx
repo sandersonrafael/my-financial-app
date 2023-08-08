@@ -7,6 +7,7 @@ import Error from '../../../components/Error';
 import { addExpense, updateExpense } from '../../../db/dataProcess';
 import { validateNewExpense } from '../../../utils/validation';
 import DateContext from '../../../contexts/DateContext';
+import Loading from '../../../components/Loading';
 // import { getDailyReportStorage, setDailyReportStorage } from '../../../db/localStorage';
 
 export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, editIndex }) {
@@ -17,6 +18,7 @@ export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, e
   const [value, setValue] = useState(edit?.value ?? '');
   const [expense, setExpense] = useState(edit?.expense ?? false);
   const [newExpenseErrors, setNewExpenseErrors] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const clearStates = () => {
     setVisibility(false);
@@ -26,18 +28,20 @@ export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, e
     setExpense(false);
   };
 
-  console.log('Estilizar melhor o newExpenseGrid');
-
   const handleAddExpense = async () => {
     const expenseData = [date, { title, category, value, expense }, editIndex];
     const newExpenseErrors = validateNewExpense(expenseData[1]);
     const haveNoErrors = newExpenseErrors.reduce((acc, value) => acc && value.length === 0, true);
 
     if (haveNoErrors) {
+      setLoading(true);
+
       setNewExpenseErrors([]);
       const { fullReport } = edit
         ? await updateExpense(...expenseData)
         : await addExpense(...expenseData);
+
+      setLoading(false);
 
       setUserExpenses(fullReport?.[date.year]?.[date.month]?.[date.date] || []);
       // setDailyReportStorage(date, { title, category, value, expense }, editIndex);
@@ -54,25 +58,33 @@ export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, e
     <Container>
       <div>
         <div>
-          <h3>Título</h3>
-          <h3>Categoria</h3>
-          <h3>Valor</h3>
-          <h3>Tipo</h3>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            placeholder="Título"
           />
+          <Error>{newExpenseErrors[0]}</Error>
+        </div>
+        <div>
           <input
             type="text"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
+            placeholder="Categoria"
           />
+          <Error>{newExpenseErrors[1]}</Error>
+        </div>
+        <div>
           <input
             type="number"
             value={value}
             onChange={(e) => setValue(e.target.value !== '' ? Number(e.target.value) : '')}
+            placeholder="Valor"
           />
+          <Error>{newExpenseErrors[2]}</Error>
+        </div>
+        <div>
           <select
             value={expense}
             onChange={(e) => setExpense(e.target.value === 'true')}
@@ -80,13 +92,13 @@ export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, e
             <option value={false}>Receita</option>
             <option value={true}>Despesa</option>
           </select>
-          {newExpenseErrors.map((error, key) => (
-            <Error key={key}>{error}</Error>
-          ))}
+          <Error>{newExpenseErrors[3]}</Error>
         </div>
         <section>
           <PrimaryButton onClick={handleAddExpense}>
-            {edit ? 'Salvar' : 'Adicionar'}
+            {loading
+              ? <Loading $sz={21} style={{ margin: '0 auto' }}/>
+              : edit ? 'Salvar' : 'Adicionar'}
           </PrimaryButton>
           <SecondaryButton onClick={handleCancel}>Cancelar</SecondaryButton>
         </section>

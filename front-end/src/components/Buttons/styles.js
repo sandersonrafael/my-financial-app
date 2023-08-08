@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const PrimaryButton = styled.button`
   padding: 13px 15px;
   font-size: 18px;
-  border: none;
+  border: 1px solid ${primaryColor};
   outline: none;
   background-color: ${primaryColor};
   cursor: pointer;
@@ -17,9 +17,8 @@ export const PrimaryButton = styled.button`
 `;
 
 export const SecondaryButton = styled.button`
-  padding: 12px 14px;
+  padding: 13px 15px;
   font-size: 18px;
-  border: none;
   outline: none;
   background-color: #fff;
   cursor: pointer;
