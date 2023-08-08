@@ -97,7 +97,11 @@ export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, e
         <section>
           <PrimaryButton onClick={handleAddExpense}>
             {loading
-              ? <Loading $sz={21} style={{ margin: '0 auto' }}/>
+              ? <Loading $sz={21} style={{
+                display: 'flex',
+                alignItens: 'center',
+                justifyContent: 'center',
+              }}/>
               : edit ? 'Salvar' : 'Adicionar'}
           </PrimaryButton>
           <SecondaryButton onClick={handleCancel}>Cancelar</SecondaryButton>
