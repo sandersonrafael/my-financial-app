@@ -14,6 +14,7 @@ export default function Home() {
   const [hambugerMenuOpen, setHambugerMenuOpen] = useState(false);
 
   const handleLogout = () => {
+    setHambugerMenuOpen(false);
     localStorage.removeItem('userAccess');
     window.reload();
   };
@@ -27,9 +28,9 @@ export default function Home() {
               <img src={logo} alt="My Financial App" />
             </Link>
             <div>
-              <Link to="/">Home</Link>
-              <Link to="/reports">Relatórios</Link>
-              <Link to="/user">Meus Dados</Link>
+              <Link to="/" onClick={() => setHambugerMenuOpen(false)}>Home</Link>
+              <Link to="/reports" onClick={() => setHambugerMenuOpen(false)}>Relatórios</Link>
+              <Link to="/user" onClick={() => setHambugerMenuOpen(false)}>Meus Dados</Link>
               <Link to="/" onClick={handleLogout}>Logout</Link>
             </div>
             <button
