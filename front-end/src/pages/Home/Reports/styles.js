@@ -31,6 +31,27 @@ export const EmphasisGrid = styled.div`
       opacity: .7;
     }
   }
+
+  @media (max-width: 668px) {
+    &:has(~div>h3) {
+      display: none;
+    }
+
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    h3 {
+      display: none;
+    }
+
+    h3:first-child,
+    h3:last-child {
+      display: block;
+    }
+
+
+  }
 `;
 
 export const ReportGrid = styled.div`
@@ -42,6 +63,11 @@ export const ReportGrid = styled.div`
   grid-template-columns: repeat(5, 1fr);
   text-align: center;
 
+  span {
+    span {
+      display: none;
+    }
+  }
   svg {
     cursor: pointer;
     font-size: 24px;
@@ -50,6 +76,38 @@ export const ReportGrid = styled.div`
 
     &:hover {
       opacity: .7;
+    }
+  }
+
+  @media (max-width: 668px) {
+    padding: 0;
+    position: relative;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 10px;
+
+    &>span {
+      white-space: nowrap;
+      display: inline-block;
+      margin: 8px auto;
+      width: 33%;
+
+      span {
+        display: block;
+      }
+
+      &:first-child {
+        width: 100%;
+      }
+
+      &:last-child {
+        margin: 0;
+        width: auto;
+        position: absolute;
+        top: 5px;
+        right: 0;
+      }
     }
   }
 `;

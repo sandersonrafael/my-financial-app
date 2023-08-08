@@ -40,7 +40,6 @@ export const Container = styled.div`
     display: none;
   }
 
-
   div>h3,
   header>h3 {
     font-weight: 600;
@@ -93,6 +92,7 @@ export const Container = styled.div`
     }
 
     hr {
+      display: block;
       border: none;
       border-bottom: 1px solid #aaa;
     }

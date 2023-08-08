@@ -80,15 +80,15 @@ export default function Reports() {
         <ReportGrid key={key}>
           <span>{mapPeriod}</span>
           <span style={{ color: entries > 0 ? 'green' : 'black' }}>
-            {formatCurrency(entries)}
+            <span>Entradas</span>{formatCurrency(entries)}
           </span>
           <span style={{ color: exits > 0 ? 'red' : 'black' }}>
-            {formatCurrency(exits)}
+            <span>Saídas</span>{formatCurrency(exits)}
           </span>
           <span
             style={{ color: total > 0 ? 'green' : total < 0 ? 'red' : 'black' }}
           >
-            {formatCurrency(total)}
+            <span>Total</span>{formatCurrency(total)}
           </span>
           <span>
             {loading && deleting.index === key ? <Loading $sz={24} $cl="#ff5f5f" /> :
@@ -161,7 +161,6 @@ export default function Reports() {
                 >
                   {formatCurrency(total)}
                 </h3>
-                <h3 />
               </EmphasisGrid>
             );
           })}
