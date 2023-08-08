@@ -57,10 +57,35 @@ export const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    white-space: nowrap;
   }
 
   @media (max-width: 450px) {
-    padding: 0;
+    padding: 5px;
+
+
+    &>div,
+    &>header,
+    &>footer {
+      &:first-child {
+      display: none;
+    }
+      border-radius: 8px;
+      padding: 5px;
+      display: block;
+      border: 1px solid #ccc;
+      margin: 5px;
+      position: relative;
+
+      span:last-child,
+      h3:last-child  {
+        position: absolute;
+        bottom: -3px;
+        right: -5px;
+        white-space: nowrap;
+      }
+      h3 {
+        padding: 5px;
+      }
+    }
   }
 `;

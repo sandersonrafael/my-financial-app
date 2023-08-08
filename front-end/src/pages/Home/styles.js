@@ -68,9 +68,6 @@ export const Header = styled.header`
           max-width: 240px;
           text-align: center;
         }
-
-
-
       }
     }
   }
@@ -97,7 +94,7 @@ export const Header = styled.header`
       display: block;
       position: ${({ $hambugerMenuOpen }) => $hambugerMenuOpen ? 'fixed' : 'absolute'};
       top: 10px;
-      right: 10px;
+      right: 15px;
       z-index: 4;
     }
   }
