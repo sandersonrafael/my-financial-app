@@ -77,6 +77,19 @@ export const Header = styled.header`
 
   button {
     display: none;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    background-color: ${primaryColor};
+    cursor: pointer;
+
+    &:hover {
+      opacity: .8;
+    }
+
+    &:active {
+      opacity: .9;
+    }
   }
 
   @media (max-width: 668px) {

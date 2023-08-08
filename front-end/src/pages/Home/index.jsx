@@ -6,7 +6,6 @@ import DailyReport from './DailyReport';
 import UserData from './UserData';
 import Reports from './Reports';
 import { Body, BodyMain, BodyTop, Container, Footer, Header } from './styles';
-import { PrimaryButton } from '../../components/Buttons';
 import { useState } from 'react';
 
 const logo = 'https://images2.imgbox.com/50/4c/tVvk0H0O_o.png';
@@ -33,12 +32,12 @@ export default function Home() {
               <Link to="/user">Meus Dados</Link>
               <Link to="/" onClick={handleLogout}>Logout</Link>
             </div>
-            <PrimaryButton
-              style={{ padding: hambugerMenuOpen ? '5px 10.9px' : '5px 10px', fontSize: 32 }}
+            <button
+              style={{ width: 50, height: 50, fontSize: 32 }}
               onClick={() => setHambugerMenuOpen(!hambugerMenuOpen)}
             >
               {hambugerMenuOpen ? '✕' : '☰'}
-            </PrimaryButton>
+            </button>
           </div>
         </Header>
 
