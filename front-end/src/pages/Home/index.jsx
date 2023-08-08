@@ -40,8 +40,8 @@ export default function Home() {
           <BodyMain>
             <Routes>
               <Route path="/" element={<DailyReport />} />
-              <Route path="/reports" element={<Reports />} />
-              <Route path="/user" element={<UserData />} />
+              <Route path="#/reports" element={<Reports />} />
+              <Route path="#/user" element={<UserData />} />
               <Route path="*" element={<Page404 />} />
             </Routes>
           </BodyMain>
