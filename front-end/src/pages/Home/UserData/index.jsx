@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Form } from './styles';
+
 import { PrimaryButton, SecondaryButton } from '../../../components/Buttons';
 import Error from '../../../components/Error';
 import { attUserData } from '../../../db/dataProcess';
 import Success from '../../../components/Success';
 import Loading from '../../../components/Loading';
 import { primaryColor } from '../../../colors/colors';
+
+import { Form } from './styles';
 
 const getName = () => localStorage.getItem('userAccess')?.split(' ')?.splice(3)?.join(' ') || '';
 const getEmail = () => localStorage.getItem('userAccess')?.split(' ')?.[2] || '';

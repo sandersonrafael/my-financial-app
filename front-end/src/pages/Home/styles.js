@@ -51,7 +51,7 @@ export const Header = styled.header`
 `;
 
 export const Body = styled.div`
-  margin-bottom: 50px;
+  margin-bottom: 80px;
 `;
 
 export const BodyTop = styled.div`

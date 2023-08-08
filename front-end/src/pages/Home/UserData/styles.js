@@ -32,6 +32,13 @@ export const Form = styled.div`
     justify-content: center;
   }
   button {
+    display: flex;
     margin: 10px 5px 0;
+  }
+
+  @media (max-width: 340px) {
+    button {
+      margin: 10px 1px 0;
+    }
   }
 `;
