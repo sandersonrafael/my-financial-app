@@ -72,7 +72,8 @@ export default function DailyReport() {
               bottom: 0,
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: 'rgba(0, 0, 0, .9)',
+              backgroundColor: 'rgba(0, 0, 0, .8)',
+              zIndex: 4,
             }}
           >
             <div style={{ height: 396 }}>

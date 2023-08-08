@@ -9,7 +9,8 @@ export const Container = styled.div`
   bottom: 0;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, .85);
+  background-color: rgba(0, 0, 0, .8);
+  z-index: 4;
 
   &>div {
     padding: 25px;

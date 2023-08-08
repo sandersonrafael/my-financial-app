@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const NoExpenses = styled.div`
   padding: 15px;
+  background-color: #blue;
 
   h3 {
     text-align: center;
@@ -11,11 +12,10 @@ export const NoExpenses = styled.div`
 `;
 
 export const Container = styled.div`
-  width: calc(100% - 30);
+  width: calc(100% - 10px);
   padding: 15px;
   font-size: 17px;
   font-weight: 500;
-  overflow-x: auto;
 
   * {
     padding: 1.5px 5px;
@@ -78,6 +78,7 @@ export const Container = styled.div`
       border: 1px solid #ccc;
       margin: 12px 5px;
       position: relative;
+
 
       span:last-child,
       h3:last-child  {
