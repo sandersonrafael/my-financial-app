@@ -36,6 +36,11 @@ export const Container = styled.div`
     }
   }
 
+  hr {
+    display: none;
+  }
+
+
   div>h3,
   header>h3 {
     font-weight: 600;
@@ -59,9 +64,8 @@ export const Container = styled.div`
     justify-content: center;
   }
 
-  @media (max-width: 450px) {
+  @media (max-width: 668px) {
     padding: 5px;
-
 
     &>div,
     &>header,
@@ -70,10 +74,10 @@ export const Container = styled.div`
       display: none;
     }
       border-radius: 8px;
-      padding: 5px;
+      padding: 10px;
       display: block;
       border: 1px solid #ccc;
-      margin: 5px;
+      margin: 12px 5px;
       position: relative;
 
       span:last-child,
@@ -84,8 +88,13 @@ export const Container = styled.div`
         white-space: nowrap;
       }
       h3 {
-        padding: 5px;
+        padding: 2px;
       }
+    }
+
+    hr {
+      border: none;
+      border-bottom: 1px solid #aaa;
     }
   }
 `;
