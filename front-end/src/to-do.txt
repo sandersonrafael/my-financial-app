@@ -5,4 +5,8 @@
   Reports
 }
 
-9 -> Fazer recuperação de senha?
+9 -> mudar margin dos inputs da página de login para 320px
+
+10 -> otimizar todos loadings com o localStorage se possível para evitar consultas ao DB
+
+11 -> Fazer recuperação de senha?

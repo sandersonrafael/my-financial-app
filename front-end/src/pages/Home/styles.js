@@ -47,6 +47,46 @@ export const Header = styled.header`
         }
       }
     }
+
+    @media (max-width: 668px) {
+      div {
+        display: ${({ $hambugerMenuOpen }) => $hambugerMenuOpen ? 'flex' : 'none'};
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        z-index: 3;
+
+        a {
+          margin: 0 auto 20px;
+          width: 100%;
+          max-width: 240px;
+          text-align: center;
+        }
+
+
+
+      }
+    }
+  }
+
+  button {
+    display: none;
+  }
+
+  @media (max-width: 668px) {
+    button {
+      display: block;
+      position: ${({ $hambugerMenuOpen }) => $hambugerMenuOpen ? 'fixed' : 'absolute'};
+      top: 10px;
+      right: 10px;
+      z-index: 4;
+    }
   }
 `;
 
