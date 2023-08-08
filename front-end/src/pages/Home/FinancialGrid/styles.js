@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const NoExpenses = styled.div`
   padding: 15px;
+
   h3 {
     text-align: center;
     font-size: 20px;
@@ -14,6 +15,7 @@ export const Container = styled.div`
   padding: 15px;
   font-size: 17px;
   font-weight: 500;
+  overflow-x: auto;
 
   * {
     padding: 1.5px 5px;
@@ -25,6 +27,7 @@ export const Container = styled.div`
     display: grid;
     grid-template-columns: 1.6fr 1.2fr .7fr .5fr;
     text-align: center;
+
   }
   &>footer {
     border-top: 1px solid #ccc;
@@ -54,5 +57,10 @@ export const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 450px) {
+    padding: 0;
   }
 `;
