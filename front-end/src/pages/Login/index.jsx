@@ -26,7 +26,9 @@ export default function Login({ setLoggedIn, loading }) {
     setRepeatPassword('');
   };
 
-  const handleLoginOrRegister = async () => {
+  const handleLoginOrRegister = async (e) => {
+    e.preventDefault();
+
     setManualEnterLoading(true);
     const connectUser = registerFields
       ? await userRegister(name, email, password, repeatPassword)
@@ -52,80 +54,76 @@ export default function Login({ setLoggedIn, loading }) {
 
           <P>Tenha o controle da sua vida financeira!</P>
 
-          {registerFields && (
-            <Input
-              type="text"
-              placeholder="Digite o nome completo"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          )}
-          {errors.nameMsgs &&
+          <form onSubmit={handleLoginOrRegister}>
+            {registerFields && (
+              <Input
+                type="text"
+                placeholder="Digite o nome completo"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            )}
+            {errors.nameMsgs &&
           errors.nameMsgs.map((value, key) => (
             <Error key={key}>{value}</Error>
           ))}
 
-          <Input
-            type="email"
-            placeholder="Digite seu E-mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          {errors.emailMsgs &&
+            <Input
+              type="email"
+              placeholder="Digite seu E-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {errors.emailMsgs &&
           errors.emailMsgs.map((value, key) => (
             <Error key={key}>{value}</Error>
           ))}
 
-          <Input
-            type="password"
-            placeholder="Digite sua Senha"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {errors.passwordMsgs &&
+            <Input
+              type="password"
+              placeholder="Digite sua Senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {errors.passwordMsgs &&
           errors.passwordMsgs.map((value, key) => (
             <Error key={key}>{value}</Error>
           ))}
 
-          {registerFields && (
-            <>
-              <Input
-                type="password"
-                placeholder="Confirme sua senha"
-                value={repeatPassword}
-                onChange={(e) => setRepeatPassword(e.target.value)}
-              />
-              {errors.repeatPasswordMsgs &&
-              errors.repeatPasswordMsgs.map((value, key) => (
-                <Error key={key}>{value}</Error>
-              ))}
-            </>
-          )}
-
-          {!registerFields && (
-            <AskCamp>
-              <a>Esqueceu sua senha?</a>
-            </AskCamp>
-          )}
-
-          {errors.message && <Error>{errors.message}</Error> }
-          <PrimaryButton
-            style={{ margin: '10px 40px 15px' }}
-            onClick={handleLoginOrRegister}
-          >
-            {manualEnterLoading ? (
-              <Loading $sz={21} style={{ margin: '0 auto' }} />
-            ) : (
-              registerFields ? 'Registrar-se' : 'Entrar'
+            {registerFields && (
+              <>
+                <Input
+                  type="password"
+                  placeholder="Confirme sua senha"
+                  value={repeatPassword}
+                  onChange={(e) => setRepeatPassword(e.target.value)}
+                />
+                {errors.repeatPasswordMsgs &&
+                  errors.repeatPasswordMsgs.map((value, key) => (
+                    <Error key={key}>{value}</Error>
+                  ))}
+              </>
             )}
-          </PrimaryButton>
+
+            {!registerFields && (
+              <AskCamp>
+                <a>Esqueceu sua senha?</a>
+              </AskCamp>
+            )}
+
+            {errors.message && <Error>{errors.message}</Error> }
+            <PrimaryButton>
+              {manualEnterLoading ? (
+                <Loading $sz={21} style={{ margin: '-2.5px auto' }} />
+              ) : (
+                registerFields ? 'Registrar-se' : 'Entrar'
+              )}
+            </PrimaryButton>
+          </form>
 
           <P>{registerFields ? 'Já' : 'Ainda não'} possui uma conta?</P>
 
-          <SecondaryButton
-            style={{ margin: `5px 40px ${registerFields ? '33px' : '10px'}` }}
-            onClick={handleChangeLoginRegister}
-          >
+          <SecondaryButton onClick={handleChangeLoginRegister}>
             {registerFields ? 'Faça Login' : 'Registre-se'}
           </SecondaryButton>
 

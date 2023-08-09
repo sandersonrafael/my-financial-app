@@ -86,6 +86,10 @@ export const Container = styled.div`
         right: -5px;
         white-space: nowrap;
       }
+      h3:last-child {
+        right: 3px;
+        bottom: -2px;
+      }
       h3 {
         padding: 2px;
       }

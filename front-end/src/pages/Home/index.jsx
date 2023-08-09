@@ -16,7 +16,7 @@ export default function Home() {
   const handleLogout = () => {
     setHambugerMenuOpen(false);
     localStorage.removeItem('userAccess');
-    window.reload();
+    window.location.href('/');
   };
 
   return (
@@ -44,7 +44,7 @@ export default function Home() {
 
         <Body>
           <BodyTop>
-            <h1>Boas vindas, {localStorage.getItem('userAccess')?.split(' ')[3]}!</h1>
+            <h1>Boas vindas, {localStorage.getItem('userAccess')?.split(' ')[3] || 'usuário'}!</h1>
           </BodyTop>
 
           <BodyMain>

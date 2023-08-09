@@ -32,6 +32,29 @@ export const Main = styled.main`
   border-radius: 12px;
   padding: 0 10px;
   box-shadow: 0 0 7px rgba(0, 0, 0, .3);
+
+  form {
+    input {
+      width: calc(100% - 112px);
+    }
+  }
+  button {
+    width: calc(100% - 80px);
+    margin: 10px 40px 15px;
+  }
+
+  @media (max-width: 386px) {
+    form {
+      input {
+        width: calc(100% - 52px);
+      }
+
+    }
+    button {
+      width: calc(100% - 20px);
+      margin: 10px 10px 15px;
+    }
+  }
 `;
 
 export const MainHeader = styled.h1`
@@ -66,6 +89,10 @@ export const Input = styled.input`
 
   &:focus {
     box-shadow: 0 0 10px 2px ${primaryColor + '55'};
+  }
+
+  @media (max-width: 386px) {
+    margin: 10px 10px 0;
   }
 `;
 
