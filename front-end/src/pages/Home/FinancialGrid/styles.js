@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const NoExpenses = styled.div`
   padding: 15px;
-  background-color: #blue;
 
   h3 {
     text-align: center;
@@ -12,7 +11,7 @@ export const NoExpenses = styled.div`
 `;
 
 export const Container = styled.div`
-  width: calc(100% - 10px);
+  width: calc(100% - 30);
   padding: 15px;
   font-size: 17px;
   font-weight: 500;

@@ -103,7 +103,7 @@ export default function FinancialGrid({ userExpenses, setUserExpenses }) {
               </span>
             </div>
           ))}
-          <hr />
+          {/* <hr /> */}
           <footer>
             <h3>Total</h3>
             <h3>{total > 0 ? 'Lucro' : total === 0 ? 'Empate' : 'Despesa' }</h3>
