@@ -52,3 +52,7 @@ export const deleteDailyReportStorage = (fullDate, index) => {
   }
   localStorage.setItem('userExpenses', JSON.stringify(fullReport));
 };
+
+export const updateReportsOnStorage = (fullReport) => {
+  localStorage.setItem('userExpenses', JSON.stringify(fullReport));
+};

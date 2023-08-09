@@ -3,7 +3,6 @@ import { BiSolidCheckShield, BiSolidEdit, BiSolidTrash } from 'react-icons/bi';
 import PropTypes from 'prop-types';
 
 import NewExpenseGrid from '../NewExpenseGrid';
-// import { deleteDailyReportStorage, getDailyReportStorage } from '../../../db/localStorage';
 import { deleteExpense } from '../../../db/dataProcess';
 import formatCurrency from '../../../utils/formatCurrency';
 import { Container, NoExpenses } from './styles';
@@ -51,8 +50,6 @@ export default function FinancialGrid({ userExpenses, setUserExpenses }) {
 
     setLoading(false);
     setDeleting({ active: false, index: null });
-    // deleteDailyReportStorage(date, index);
-    // setUserExpenses(getDailyReportStorage(date));
   };
 
   return (

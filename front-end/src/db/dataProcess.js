@@ -1,11 +1,17 @@
 import { validateLogin, validateRegister, validateAttUserData } from '../utils/validation';
 import mongoDB from './mongoDB';
+import { updateReportsOnStorage } from './localStorage';
 
 const getIdAndToken = () => localStorage.getItem('userAccess')?.split(' ') || ['', ''];
 
 const saveUserAccess = (id, token, email, name) => localStorage.setItem(
   'userAccess', `${id} ${token} ${email} ${name}`,
 );
+
+const attExpensesStorage = (dbResponse) => {
+  const { fullReport } = dbResponse;
+  if (fullReport) updateReportsOnStorage(fullReport);
+};
 
 export const userLogin = async (email, password) => {
   let errors = validateLogin(email, password);
@@ -76,20 +82,37 @@ export const attUserData = async (
 
 export const loadExpenses = async () => {
   const [id, token] = getIdAndToken();
-  return await mongoDB.loadExpenses(id, token);
+  const fullReport = localStorage.getItem('userExpenses');
+  if (fullReport) return { fullReport: JSON.parse(fullReport) };
+
+  const dbResponse = await mongoDB.loadExpenses(id, token);
+  attExpensesStorage(dbResponse);
+
+  return dbResponse;
 };
 
 export const addExpense = async (fullDate, nexExpense) => {
   const [id, token] = getIdAndToken();
-  return await mongoDB.addExpense(id, token, fullDate, nexExpense);
+  const dbResponse = await mongoDB.addExpense(id, token, fullDate, nexExpense);
+  attExpensesStorage(dbResponse);
+
+  return dbResponse;
 };
 
 export const updateExpense = async (fullDate, newExpense, index) => {
   const [id, token] = getIdAndToken();
-  return await mongoDB.updateExpense(id, token, fullDate, newExpense, index);
+  const dbResponse = await mongoDB.updateExpense(id, token, fullDate, newExpense, index);
+  attExpensesStorage(dbResponse);
+
+  return dbResponse;
 };
 
 export const deleteExpense = async (fullDate, index, deleteMonth, deleteYear) => {
   const [id, token] = getIdAndToken();
-  return await mongoDB.deleteExpense(id, token, fullDate, index, deleteMonth, deleteYear);
+  const dbResponse = await mongoDB.deleteExpense(
+    id, token, fullDate, index, deleteMonth, deleteYear,
+  );
+  attExpensesStorage(dbResponse);
+
+  return dbResponse;
 };

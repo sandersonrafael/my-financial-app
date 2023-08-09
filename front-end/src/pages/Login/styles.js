@@ -43,12 +43,11 @@ export const Main = styled.main`
     margin: 10px 40px 15px;
   }
 
-  @media (max-width: 386px) {
+  @media (max-width: 400px) {
     form {
       input {
         width: calc(100% - 52px);
       }
-
     }
     button {
       width: calc(100% - 20px);
@@ -91,7 +90,7 @@ export const Input = styled.input`
     box-shadow: 0 0 10px 2px ${primaryColor + '55'};
   }
 
-  @media (max-width: 386px) {
+  @media (max-width: 400px) {
     margin: 10px 10px 0;
   }
 `;

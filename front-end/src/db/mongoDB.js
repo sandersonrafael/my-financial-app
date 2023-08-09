@@ -41,13 +41,6 @@ const mongoDB = {
     }
   },
   userAccess: async (id, token) => {
-    console.log(
-      'Usar o localStorage para otimizar a aplicação. Sempre verifica se tem o localStorage ' +
-      '-> verifica se tem o localStorage e se tiver, carrega do storage, se não, do DB. ' +
-      'Sempre que salva no DB, salva no storage também. Sempre que carrega do DB,' +
-      ' salva no storage também... etc',
-    );
-
     try {
       const res = await fetch(`${host}/users/${id}`, {
         method: 'GET',

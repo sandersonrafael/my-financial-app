@@ -10,7 +10,6 @@ import DateContext from '../../../contexts/DateContext';
 import Loading from '../../../components/Loading';
 import { CgSelectR } from 'react-icons/cg';
 import { BsPencilSquare } from 'react-icons/bs';
-// import { getDailyReportStorage, setDailyReportStorage } from '../../../db/localStorage';
 
 export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, editIndex }) {
   const { date } = useContext(DateContext);
@@ -18,7 +17,7 @@ export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, e
   const [title, setTitle] = useState(edit?.title ?? '');
   const [category, setCategory] = useState(edit?.category ?? '');
   const [value, setValue] = useState(edit?.value ?? '');
-  const [expense, setExpense] = useState(edit?.expense ?? false);
+  const [expense, setExpense] = useState(edit?.expense ?? true);
   const [newExpenseErrors, setNewExpenseErrors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [suggestionsOn, setSuggestionsOn] = useState(false);
@@ -61,8 +60,6 @@ export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, e
       setLoading(false);
 
       setUserExpenses(fullReport?.[date.year]?.[date.month]?.[date.date] || []);
-      // setDailyReportStorage(date, { title, category, value, expense }, editIndex);
-      // setUserExpenses(getDailyReportStorage(date));
       clearStates();
     } else {
       setNewExpenseErrors(newExpenseErrors);

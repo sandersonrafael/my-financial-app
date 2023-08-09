@@ -1,14 +1,1 @@
-6 -> Responsividade {
-  Menu Hamburger
-  NewExpenseGrid
-  Home
-  Reports
-}
-
-9 -> mudar margin dos inputs da página de login para 320px
-
-10 -> otimizar todos loadings com o localStorage se possível para evitar consultas ao DB
-
-11 -> fazer primeira letra em uppercase para o category suggestion do storage e as demais como lower
-
 12 -> Fazer recuperação de senha?
