@@ -9,4 +9,6 @@
 
 10 -> otimizar todos loadings com o localStorage se possível para evitar consultas ao DB
 
-11 -> Fazer recuperação de senha?
+11 -> fazer primeira letra em uppercase para o category suggestion do storage e as demais como lower
+
+12 -> Fazer recuperação de senha?

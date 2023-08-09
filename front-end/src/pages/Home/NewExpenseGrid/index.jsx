@@ -8,6 +8,8 @@ import { addExpense, updateExpense } from '../../../db/dataProcess';
 import { validateNewExpense } from '../../../utils/validation';
 import DateContext from '../../../contexts/DateContext';
 import Loading from '../../../components/Loading';
+import { CgSelectR } from 'react-icons/cg';
+import { BsPencilSquare } from 'react-icons/bs';
 // import { getDailyReportStorage, setDailyReportStorage } from '../../../db/localStorage';
 
 export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, editIndex }) {
@@ -19,6 +21,10 @@ export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, e
   const [expense, setExpense] = useState(edit?.expense ?? false);
   const [newExpenseErrors, setNewExpenseErrors] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [suggestionsOn, setSuggestionsOn] = useState(false);
+  const [expenseCategorySuggestion, setExpenseCategorySuggestion] = useState(
+    JSON.parse(localStorage.getItem('expenseCategorySuggestion') || '[]').sort(),
+  );
 
   const clearStates = () => {
     setVisibility(false);
@@ -41,6 +47,17 @@ export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, e
         ? await updateExpense(...expenseData)
         : await addExpense(...expenseData);
 
+      const attCategoryStorage = localStorage.getItem('expenseCategorySuggestion') || '[]';
+      const jsonCategoryStorage = JSON.parse(attCategoryStorage);
+      const itemExistsOnStorage = jsonCategoryStorage.reduce((verify, item) => {
+        return verify || item === category;
+      }, false);
+
+      if (!itemExistsOnStorage) {
+        jsonCategoryStorage.push(category);
+      }
+      localStorage.setItem('expenseCategorySuggestion', JSON.stringify(jsonCategoryStorage));
+      setExpenseCategorySuggestion(jsonCategoryStorage?.sort());
       setLoading(false);
 
       setUserExpenses(fullReport?.[date.year]?.[date.month]?.[date.date] || []);
@@ -50,6 +67,11 @@ export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, e
     } else {
       setNewExpenseErrors(newExpenseErrors);
     }
+  };
+
+  const handleSuggestionOrNo = () => {
+    setSuggestionsOn(!suggestionsOn);
+    setCategory(edit?.category ?? '');
   };
 
   const handleCancel = () => clearStates();
@@ -67,12 +89,27 @@ export default function NewExpenseGrid({ setVisibility, setUserExpenses, edit, e
           <Error>{newExpenseErrors[0]}</Error>
         </div>
         <div>
-          <input
-            type="text"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            placeholder="Categoria"
-          />
+          {suggestionsOn ?
+            <select onChange={(e) => setCategory(e.target.value)}>
+              <option value="">Selecione...</option>
+              {expenseCategorySuggestion?.map((item, key) => (
+                <option key={key} value={item}>{item}</option>
+              ))}
+            </select>
+            :
+            <input
+              type="text"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              placeholder="Categoria"
+            />
+          }
+          {expenseCategorySuggestion.length > 0 ? suggestionsOn ?
+            <BsPencilSquare onClick={handleSuggestionOrNo} /> :
+            <CgSelectR onClick={handleSuggestionOrNo} /> :
+            ''
+          }
+
           <Error>{newExpenseErrors[1]}</Error>
         </div>
         <div>

@@ -45,8 +45,28 @@ export const Container = styled.div`
       }
       select {
         cursor: pointer;
-        padding: 15px;
+        padding: 12px 15px;
         max-width: 100%;
+        font-size: 17px;
+      }
+    }
+
+    div:has(input + svg, select + svg) {
+      position: relative;
+
+      input {
+        padding-right: 27px;
+        width: calc(100% - 44px);
+      }
+      svg {
+        background-color: white;
+        cursor: pointer;
+        position: absolute;
+        color: #777;
+        font-size: 24px;
+        font-weight: 100;
+        top: 11px;
+        right: 3px;
       }
     }
 
