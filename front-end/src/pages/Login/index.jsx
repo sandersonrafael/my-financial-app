@@ -58,7 +58,7 @@ export default function Login({ setLoggedIn, loading }) {
             {registerFields && (
               <Input
                 type="text"
-                placeholder="Digite o nome completo"
+                placeholder="Digite o Nome Completo"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -94,7 +94,7 @@ export default function Login({ setLoggedIn, loading }) {
               <>
                 <Input
                   type="password"
-                  placeholder="Confirme sua senha"
+                  placeholder="Confirme sua Senha"
                   value={repeatPassword}
                   onChange={(e) => setRepeatPassword(e.target.value)}
                 />
