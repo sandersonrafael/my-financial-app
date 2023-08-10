@@ -16,6 +16,7 @@ export default function Home() {
   const handleLogout = () => {
     setHambugerMenuOpen(false);
     localStorage.removeItem('userAccess');
+    localStorage.removeItem('userExpenses');
     window.location.href('/');
   };
 

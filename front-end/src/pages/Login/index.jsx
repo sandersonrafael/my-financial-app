@@ -28,6 +28,7 @@ export default function Login({ setLoggedIn, loading }) {
 
   const handleLoginOrRegister = async (e) => {
     e.preventDefault();
+    setErrors({});
 
     setManualEnterLoading(true);
     const connectUser = registerFields
@@ -39,6 +40,7 @@ export default function Login({ setLoggedIn, loading }) {
       setEmail(connectUser.email);
       setLoggedIn(true);
       setErrors({});
+      localStorage.removeItem('userExpenses');
     } else setErrors({ ...connectUser });
   };
 
