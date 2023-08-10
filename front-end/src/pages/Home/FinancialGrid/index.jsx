@@ -108,16 +108,19 @@ export default function FinancialGrid({ userExpenses, setUserExpenses }) {
               {formatCurrency(total)}
             </h3>
             <h3>
-              {userExpenses.length <= 0 ? '' : deleting.active && deleting.index === undefined ?
-                <BiSolidCheckShield
-                  color="#ff5f5f"
-                  onClick={handleDeleteConfirm}
-                />
-                :
-                <BiSolidTrash
-                  color="#ff5f5f"
-                  onClick={handleDelete}
-                />
+              {userExpenses.length === 0 ? '' : loading && deleting.index === undefined ?
+                <Loading $sz={24} $cl="#ff5f5f" />
+                : deleting.active && deleting.index === undefined ?
+                  <BiSolidCheckShield
+                    color="#ff5f5f"
+                    onClick={handleDeleteConfirm}
+                  />
+                  :
+                  <BiSolidTrash
+                    color="#ff5f5f"
+                    onClick={handleDelete}
+                  />
+
               }
             </h3>
           </footer>
