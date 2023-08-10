@@ -7,6 +7,7 @@ export const Container = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+  overflow-y: auto;
 
   display: flex;
   flex-direction: column;
@@ -37,6 +38,12 @@ export const Main = styled.main`
     input {
       width: calc(100% - 112px);
     }
+
+    p {
+      display: block;
+      margin: 0 auto;
+      width: 300px;
+    }
   }
   button {
     width: calc(100% - 80px);
@@ -47,6 +54,11 @@ export const Main = styled.main`
     form {
       input {
         width: calc(100% - 52px);
+      }
+
+      p {
+        width: calc(100% - 52px);
+        font-size: 14px;
       }
     }
     button {
