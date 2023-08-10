@@ -17,7 +17,7 @@ export default function Home() {
     setHambugerMenuOpen(false);
     localStorage.removeItem('userAccess');
     localStorage.removeItem('userExpenses');
-    window.location.reload();
+    window.location.href('/');
   };
 
   return (
