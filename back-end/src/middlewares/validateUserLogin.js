@@ -38,13 +38,13 @@ const validateUserLogin = async (req, res, next) => {
     //user validate
     const dbUser = await User.findOne({ email });
     if (!dbUser) return res.status(401).json({
-      message: 'E-mail não encontrado no sistema.',
+      message: 'E-mail ou senha inválidos.',
     });
 
     try {
       const passwordMatches = await bcrypt.compare(password, dbUser.password);
       if (!passwordMatches) return res.status(401).json({
-        message: 'Usuário ou senha inválidos.',
+        message: 'E-mail ou senha inválidos.',
       });
     } catch(err) {
       return res.status(500).json({
